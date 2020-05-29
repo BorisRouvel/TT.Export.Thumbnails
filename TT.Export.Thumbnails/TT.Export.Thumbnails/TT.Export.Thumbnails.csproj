@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7AB2D3B1-F4B6-4E2F-AF4A-6568957A1A66}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TT.Export.Thumbnails</RootNamespace>
+    <AssemblyName>TT.Export.Thumbnails</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\ic90dev\plugins\transtec\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\ic90dev\plugins\transtec\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="kd.sdk, Version=8.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Ic90dev\kd.sdk.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\Analysis\SceneAnalysis.cs">
+      <Link>src\Analysis\SceneAnalysis.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\App\KDConfig.cs">
+      <Link>src\App\KDConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\InSitu\InSitu.Ini.cs">
+      <Link>src\InSitu\InSitu.Ini.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\Maths\Maths.cs">
+      <Link>src\Maths\Maths.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\Model\CatalogProperties.cs">
+      <Link>src\Model\CatalogProperties.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\Model\ModelWrapper.cs">
+      <Link>src\Model\ModelWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\SDK\CatalogHelper.cs">
+      <Link>src\SDK\CatalogHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\SDK\FilterBuilder.cs">
+      <Link>src\SDK\FilterBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\SDK\PluginHelper.cs">
+      <Link>src\SDK\PluginHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\SDK\ScriptHelper.cs">
+      <Link>src\SDK\ScriptHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\SDK\SDKWrapper.cs">
+      <Link>src\SDK\SDKWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\System\AssemblyHelper.cs">
+      <Link>src\System\AssemblyHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\System\CsvHelper.cs">
+      <Link>src\System\CsvHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\System\DataHelper.cs">
+      <Link>src\System\DataHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\System\HSLColor.cs">
+      <Link>src\System\HSLColor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\System\ImageHelper.cs">
+      <Link>src\System\ImageHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\System\IniHelper.cs">
+      <Link>src\System\IniHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\System\IOHelper.cs">
+      <Link>src\System\IOHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\System\StringHelper.cs">
+      <Link>src\System\StringHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common Source Developpement\KD.Plugin.Core\src\Translate\DialogMessage.cs">
+      <Link>src\Translate\DialogMessage.cs</Link>
+    </Compile>
+    <Compile Include="Export.cs" />
+    <Compile Include="Plugin.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\Classification\" />
+    <Folder Include="src\Const\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
