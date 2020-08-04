@@ -29,13 +29,11 @@
         private void InitializeComponent()
         {
             this.ok_BTN = new System.Windows.Forms.Button();
-            this.version_LAB = new System.Windows.Forms.Label();
             this.parameters_GBX = new System.Windows.Forms.GroupBox();
             this.viewmode_GBX = new System.Windows.Forms.GroupBox();
             this.viewmode2D_RBT = new System.Windows.Forms.RadioButton();
             this.viewmode3D_RBT = new System.Windows.Forms.RadioButton();
             this.transparency_CHB = new System.Windows.Forms.CheckBox();
-            this.status_LAB = new System.Windows.Forms.Label();
             this.backGround_TBX = new System.Windows.Forms.TextBox();
             this.antiAliasing_TBX = new System.Windows.Forms.TextBox();
             this.close_RBT = new System.Windows.Forms.RadioButton();
@@ -48,30 +46,24 @@
             this.yRes_TBX = new System.Windows.Forms.TextBox();
             this.xRes_TBX = new System.Windows.Forms.TextBox();
             this.cancel_BTN = new System.Windows.Forms.Button();
+            this.status_SST = new System.Windows.Forms.StatusStrip();
+            this.status_LAB2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.version_LNK = new System.Windows.Forms.LinkLabel();
             this.parameters_GBX.SuspendLayout();
             this.viewmode_GBX.SuspendLayout();
+            this.status_SST.SuspendLayout();
             this.SuspendLayout();
             // 
             // ok_BTN
             // 
             this.ok_BTN.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.ok_BTN.Location = new System.Drawing.Point(30, 229);
+            this.ok_BTN.Location = new System.Drawing.Point(30, 219);
             this.ok_BTN.Name = "ok_BTN";
             this.ok_BTN.Size = new System.Drawing.Size(75, 23);
             this.ok_BTN.TabIndex = 6;
             this.ok_BTN.Text = "Ok";
             this.ok_BTN.UseVisualStyleBackColor = true;
             this.ok_BTN.Click += new System.EventHandler(this.ok_BTN_Click);
-            // 
-            // version_LAB
-            // 
-            this.version_LAB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.version_LAB.AutoSize = true;
-            this.version_LAB.Location = new System.Drawing.Point(9, 255);
-            this.version_LAB.Name = "version_LAB";
-            this.version_LAB.Size = new System.Drawing.Size(48, 13);
-            this.version_LAB.TabIndex = 10;
-            this.version_LAB.Text = "Version :";
             // 
             // parameters_GBX
             // 
@@ -80,7 +72,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.parameters_GBX.Controls.Add(this.viewmode_GBX);
             this.parameters_GBX.Controls.Add(this.transparency_CHB);
-            this.parameters_GBX.Controls.Add(this.status_LAB);
             this.parameters_GBX.Controls.Add(this.backGround_TBX);
             this.parameters_GBX.Controls.Add(this.antiAliasing_TBX);
             this.parameters_GBX.Controls.Add(this.close_RBT);
@@ -94,7 +85,7 @@
             this.parameters_GBX.Controls.Add(this.xRes_TBX);
             this.parameters_GBX.Location = new System.Drawing.Point(12, 12);
             this.parameters_GBX.Name = "parameters_GBX";
-            this.parameters_GBX.Size = new System.Drawing.Size(190, 211);
+            this.parameters_GBX.Size = new System.Drawing.Size(190, 201);
             this.parameters_GBX.TabIndex = 3;
             this.parameters_GBX.TabStop = false;
             this.parameters_GBX.Text = "Paramètres";
@@ -145,15 +136,6 @@
             this.transparency_CHB.UseVisualStyleBackColor = true;
             this.transparency_CHB.Visible = false;
             this.transparency_CHB.CheckedChanged += new System.EventHandler(this.transparency_CHB_CheckedChanged);
-            // 
-            // status_LAB
-            // 
-            this.status_LAB.AutoSize = true;
-            this.status_LAB.Location = new System.Drawing.Point(7, 186);
-            this.status_LAB.Name = "status_LAB";
-            this.status_LAB.Size = new System.Drawing.Size(86, 13);
-            this.status_LAB.TabIndex = 10;
-            this.status_LAB.Text = "Export Nb : 0 / 0";
             // 
             // backGround_TBX
             // 
@@ -260,7 +242,7 @@
             // 
             this.cancel_BTN.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.cancel_BTN.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel_BTN.Location = new System.Drawing.Point(111, 229);
+            this.cancel_BTN.Location = new System.Drawing.Point(111, 219);
             this.cancel_BTN.Name = "cancel_BTN";
             this.cancel_BTN.Size = new System.Drawing.Size(75, 23);
             this.cancel_BTN.TabIndex = 11;
@@ -268,17 +250,46 @@
             this.cancel_BTN.UseVisualStyleBackColor = true;
             this.cancel_BTN.Click += new System.EventHandler(this.cancel_BTN_Click);
             // 
+            // status_SST
+            // 
+            this.status_SST.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.status_LAB2});
+            this.status_SST.Location = new System.Drawing.Point(0, 249);
+            this.status_SST.Name = "status_SST";
+            this.status_SST.Size = new System.Drawing.Size(214, 22);
+            this.status_SST.TabIndex = 12;
+            this.status_SST.Text = "statusStrip1";
+            // 
+            // status_LAB2
+            // 
+            this.status_LAB2.Name = "status_LAB2";
+            this.status_LAB2.Size = new System.Drawing.Size(92, 17);
+            this.status_LAB2.Text = "Export Nb : 0 / 0";
+            // 
+            // version_LNK
+            // 
+            this.version_LNK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.version_LNK.AutoSize = true;
+            this.version_LNK.Location = new System.Drawing.Point(9, 224);
+            this.version_LNK.Name = "version_LNK";
+            this.version_LNK.Size = new System.Drawing.Size(13, 13);
+            this.version_LNK.TabIndex = 13;
+            this.version_LNK.TabStop = true;
+            this.version_LNK.Text = "?";
+            this.version_LNK.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.version_LNK_LinkClicked);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.ok_BTN;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancel_BTN;
-            this.ClientSize = new System.Drawing.Size(214, 277);
+            this.ClientSize = new System.Drawing.Size(214, 271);
             this.ControlBox = false;
+            this.Controls.Add(this.version_LNK);
+            this.Controls.Add(this.status_SST);
             this.Controls.Add(this.cancel_BTN);
             this.Controls.Add(this.parameters_GBX);
-            this.Controls.Add(this.version_LAB);
             this.Controls.Add(this.ok_BTN);
             this.MinimumSize = new System.Drawing.Size(230, 310);
             this.Name = "MainForm";
@@ -292,6 +303,8 @@
             this.parameters_GBX.PerformLayout();
             this.viewmode_GBX.ResumeLayout(false);
             this.viewmode_GBX.PerformLayout();
+            this.status_SST.ResumeLayout(false);
+            this.status_SST.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -299,7 +312,6 @@
 
         #endregion
         private System.Windows.Forms.Button ok_BTN;
-        private System.Windows.Forms.Label version_LAB;
         private System.Windows.Forms.GroupBox parameters_GBX;
         private System.Windows.Forms.TextBox backGround_TBX;
         private System.Windows.Forms.TextBox antiAliasing_TBX;
@@ -314,9 +326,11 @@
         private System.Windows.Forms.TextBox xRes_TBX;
         private System.Windows.Forms.Button cancel_BTN;
         private System.Windows.Forms.CheckBox transparency_CHB;
-        private System.Windows.Forms.Label status_LAB;
         private System.Windows.Forms.GroupBox viewmode_GBX;
         private System.Windows.Forms.RadioButton viewmode2D_RBT;
         private System.Windows.Forms.RadioButton viewmode3D_RBT;
+        private System.Windows.Forms.StatusStrip status_SST;
+        private System.Windows.Forms.ToolStripStatusLabel status_LAB2;
+        private System.Windows.Forms.LinkLabel version_LNK;
     }
 }

@@ -90,8 +90,8 @@ namespace TT.Export.Thumbnails
         private void InitForm(string catalogFileName)
         {
             this.Text += KD.StringTools.Const.WhiteSpace + catalogFileName;
-            string[] assemblyFullNameSplit = System.Reflection.Assembly.GetCallingAssembly().ToString().Split(KD.CharTools.Const.Comma);
-            this.version_LAB.Text = assemblyFullNameSplit[1]; // "Version : " + System.Reflection.Assembly.GetCallingAssembly(); //this.ProductVersion;
+            //string[] assemblyFullNameSplit = System.Reflection.Assembly.GetCallingAssembly().ToString().Split(KD.CharTools.Const.Comma);
+            //this.version_LAB.Text = assemblyFullNameSplit[1]; // "Version : " + System.Reflection.Assembly.GetCallingAssembly(); //this.ProductVersion;
             this.transparency_CHB.CheckState = CheckState.Checked;
         }
         private void InitMembers(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool executeFromExt = true)
@@ -120,9 +120,10 @@ namespace TT.Export.Thumbnails
         public void UpdateForm(int thumbnailNb)
         {
             this._thumbnailNb = thumbnailNb;
-            this.status_LAB.Text = "Export Nb: " + this.ThumbnailNb.ToString() + KD.StringTools.Format.Spaced(KD.StringTools.Const.Slatch) + this.ThumbnailNbs.ToString();          
-            this.Focus();            
-            this.Refresh();
+            this.status_LAB2.Text = "Export Nb: " + this.ThumbnailNb.ToString() + KD.StringTools.Format.Spaced(KD.StringTools.Const.Slatch) + this.ThumbnailNbs.ToString();          
+            this.Focus();
+            //this.Refresh();
+            this.status_SST.Refresh();
           
         }
         
@@ -296,7 +297,12 @@ namespace TT.Export.Thumbnails
             }
         }
 
-        
+        private void version_LNK_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            string[] assemblyFullName = System.Reflection.Assembly.GetExecutingAssembly().ToString().Split(KD.CharTools.Const.Comma);
+            string[] assemblyVersion = assemblyFullName[1].Split(KD.CharTools.Const.EqualSign);
+            MessageBox.Show("Version: " + assemblyVersion[1], "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
 
     

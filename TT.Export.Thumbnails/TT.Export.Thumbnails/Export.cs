@@ -210,16 +210,21 @@ namespace TT.Export.Thumbnails
         public bool IsGraphic()
         {
             string script = this.Reference.Block_Script;
+           
+            // begin a script with exclamation will not do a graphic
+            if (script.StartsWith(KD.StringTools.Const.ExclamationMark) && !script.ToUpper().Contains(KD.StringTools.Const.Ampersand))
+            {
+                return false;
+            }
 
-            if (script.StartsWith(KD.StringTools.Const.Ampersand))
-            {
-                return false;
-            }
-            if (script.StartsWith(KD.StringTools.Const.ExclamationMark))
-            {
-                return false;
-            }
-            if (script.ToUpper().StartsWith("TEXT"))
+            // begin a script with Ampersand will do a graphic
+            //if (script.StartsWith(KD.StringTools.Const.Ampersand))
+            //{
+            //    return false;
+            //}
+
+            // begin a script with "Text" will do a graphic if the next contain 2D or 3D or &
+            if (script.ToUpper().StartsWith("TEXT") && !script.ToUpper().Contains(KD.StringTools.Const.Ampersand))
             {
                 return false;
             }
