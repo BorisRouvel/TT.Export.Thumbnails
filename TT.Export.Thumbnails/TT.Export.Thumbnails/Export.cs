@@ -187,13 +187,17 @@ namespace TT.Export.Thumbnails
             return result;
         }
 
-        public bool IsValid()
+        public bool IsValid(string form)
         {
             if (this.Reference.Section_Name.StartsWith(KD.CatalogProperties.Const.arobase))
             {
                 return false;
             }
-            if (this.Reference.Article_Width == 0 || this.Reference.Article_Depth == 0 || this.Reference.Article_Height == 0)
+            if (form == Export._3D && (this.Reference.Article_Width == 0 || this.Reference.Article_Depth == 0 || this.Reference.Article_Height == 0))
+            {
+                return false;
+            }
+            if (form == Export._2D && (this.Reference.Article_Width == 0 || this.Reference.Article_Depth == 0))
             {
                 return false;
             }

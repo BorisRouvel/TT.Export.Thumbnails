@@ -172,7 +172,7 @@ namespace TT.Export.Thumbnails
 
                         export = new Export(_reference);
 
-                        if (export.IsValid() && export.IsGraphic())
+                        if (export.IsValid(this.ViewMode) && export.IsGraphic())
                         {
                             export.ExportDirectImage();
                         }                       
