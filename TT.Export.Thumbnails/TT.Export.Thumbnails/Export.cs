@@ -13,6 +13,8 @@ namespace TT.Export.Thumbnails
         private const string rightHanding = "D";
         private const string _2D = "2D";
         private const string _3D = "3D";
+        private const string _2DEqual = "2D=";
+        private const string _3DEqual = "3D=";
 
         private static KD.SDKComponent.AppliComponent _appli = null;
         
@@ -223,11 +225,13 @@ namespace TT.Export.Thumbnails
             //    return false;
             //}
 
-            // begin a script with "Text" will do a graphic if the next contain 2D or 3D or &
-            if (script.ToUpper().StartsWith("TEXT") && !script.ToUpper().Contains(KD.StringTools.Const.Ampersand))
-            {
-                return false;
-            }
+            //// begin a script with "Text" will do a graphic if the next contain 2D or 3D or &
+            //if ((script.ToUpper().StartsWith("TEXT") && !script.ToUpper().Contains(KD.StringTools.Const.Ampersand)) &&
+            //    (script.ToUpper().StartsWith("TEXT") && !script.ToUpper().Contains(Export._2DEqual.ToUpper())) &&
+            //    (script.ToUpper().StartsWith("TEXT") && !script.ToUpper().Contains(Export._3DEqual.ToUpper())))
+            //{
+            //    return false;
+            //}
 
             return true;
         }
