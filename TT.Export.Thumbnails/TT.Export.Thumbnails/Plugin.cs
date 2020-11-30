@@ -82,22 +82,22 @@ namespace TT.Export.Thumbnails
 
         public bool Main(int iCallParamsBlock)
         {
-            this.ExecuteWebThumbnailExportInside(String.Empty, String.Empty, String.Empty, String.Empty, true);
+            this.ExecuteWebThumbnailExportInside(String.Empty, String.Empty, String.Empty, String.Empty, true, true);
 
             return true;
         }       
        
-        public bool ExecuteWebThumbnailExportInside(string viewMode, string xRes, string yRes, string antiAliasing, bool opened)
+        public bool ExecuteWebThumbnailExportInside(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll)
         {
-            this.ExecuteWebThumbnail(viewMode, xRes, yRes, antiAliasing, opened, false);
+            this.ExecuteWebThumbnail(viewMode, xRes, yRes, antiAliasing, opened, loopAll, false);
             return true;
         }
-        public bool ExecuteWebThumbnailExport(string viewMode, string xRes, string yRes, string antiAliasing, bool opened)
+        public bool ExecuteWebThumbnailExport(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll)
         {
-            this.ExecuteWebThumbnail(viewMode, xRes, yRes, antiAliasing, opened, true);
+            this.ExecuteWebThumbnail(viewMode, xRes, yRes, antiAliasing, opened, loopAll, true);
             return true;
         }
-        public bool ExecuteWebThumbnail(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool executeFromExt)
+        public bool ExecuteWebThumbnail(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt)
         {            
             reference = new KD.CatalogProperties.Reference(this.CurrentAppli, this.CurrentAppli.MobiScriptCatalogGetInfo(KD.SDK.AppliEnum.MSCatalogInfoId.FILENAME));
 
@@ -110,18 +110,17 @@ namespace TT.Export.Thumbnails
             }
             else
             {
-                this.InitializeMainForm(viewMode, xRes, yRes, antiAliasing, opened, executeFromExt);
+                this.InitializeMainForm(viewMode, xRes, yRes, antiAliasing, opened, loopAll, executeFromExt);
                 this.ShowMainForm(executeFromExt);
-
             }
             return true;
         }
 
-        private void InitializeMainForm(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool executeFromExt = true)
+        private void InitializeMainForm(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt = true)
         {
             if (this.mainForm == null)
             {
-                this.mainForm = new MainForm(this.CurrentAppli, reference, viewMode, xRes, yRes, antiAliasing, opened, executeFromExt);
+                this.mainForm = new MainForm(this.CurrentAppli, reference, viewMode, xRes, yRes, antiAliasing, opened, loopAll, executeFromExt);
             }           
         }
         private void ShowMainForm( bool executeFromExt = true)

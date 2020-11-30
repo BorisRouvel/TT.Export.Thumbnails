@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="kd.sdk">
       <HintPath>..\..\..\..\..\Ic90dev\kd.sdk.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
@@ -66,9 +67,6 @@
     </Compile>
     <Compile Include="..\..\..\Plugins.Core\src\Analysis\WallsAnalysis.cs">
       <Link>src\Analysis\WallsAnalysis.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Plugins.Core\src\Classification\ArrangementClassification.cs">
-      <Link>src\Classification\ArrangementClassification.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Plugins.Core\src\Classification\ArticleClassification.cs">
       <Link>src\Classification\ArticleClassification.cs</Link>
@@ -129,10 +127,6 @@
     <Compile Include="..\..\..\Plugins.Core\src\SDK\CatalogHelper.cs">
       <Link>src\SDK\CatalogHelper.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Plugins.Core\src\SDK\CatalogProperties.cs">
-      <Link>src\SDK\CatalogProperties.cs</Link>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="..\..\..\Plugins.Core\src\SDK\DicoHelper.cs">
       <Link>src\SDK\DicoHelper.cs</Link>
     </Compile>
@@ -178,8 +172,15 @@
     <Compile Include="..\..\..\Plugins.Core\src\System\StringsHelper.cs">
       <Link>src\System\StringsHelper.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Plugins.Nub\KD.Plugins.Nub\KD.Plugins.Nub\SortedArticle.cs">
-      <Link>src\Model\SortedArticle.cs</Link>
+    <Compile Include="..\..\..\Plugins.Nub\KD.Plugins.Nub\KD.Plugins.Nub\Nub\Classification\ArrangementClassification.cs">
+      <Link>Nub\Classification\ArrangementClassification.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Plugins.Nub\KD.Plugins.Nub\KD.Plugins.Nub\Nub\Model\CatalogProperties.cs">
+      <Link>Nub\Model\CatalogProperties.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\..\..\Plugins.Nub\KD.Plugins.Nub\KD.Plugins.Nub\Nub\Model\SortedArticle.cs">
+      <Link>Nub\Model\SortedArticle.cs</Link>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Export.cs" />

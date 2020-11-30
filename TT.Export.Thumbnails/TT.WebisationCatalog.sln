@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.Export.Thumbnails", "TT.Export.Thumbnails\TT.Export.Thumbnails.csproj", "{7AB2D3B1-F4B6-4E2F-AF4A-6568957A1A66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT.WebisationStandalone", "TT.WebisationStandalone\TT.WebisationStandalone.csproj", "{72902BE7-8E79-4270-ADE5-ED71B1AD6A44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{7AB2D3B1-F4B6-4E2F-AF4A-6568957A1A66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AB2D3B1-F4B6-4E2F-AF4A-6568957A1A66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AB2D3B1-F4B6-4E2F-AF4A-6568957A1A66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72902BE7-8E79-4270-ADE5-ED71B1AD6A44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72902BE7-8E79-4270-ADE5-ED71B1AD6A44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72902BE7-8E79-4270-ADE5-ED71B1AD6A44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72902BE7-8E79-4270-ADE5-ED71B1AD6A44}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F0F9F99A-296F-4371-B823-489802A5044B}
 	EndGlobalSection
 EndGlobal

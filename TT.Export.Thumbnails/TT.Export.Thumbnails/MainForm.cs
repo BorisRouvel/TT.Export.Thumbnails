@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.ComponentModel;
 
 using KD.CatalogProperties;
 
@@ -11,6 +12,7 @@ namespace TT.Export.Thumbnails
         private KD.SDKComponent.AppliComponent _appli = null;
         private Reference _reference = null;
         //MyKeyboard escapeKey = new MyKeyboard(Key.Space);
+        private string _webCatalogURL = String.Empty;
 
         private string _viewMode;
         private string _xRes;
@@ -19,6 +21,8 @@ namespace TT.Export.Thumbnails
         private string _antiAliasing;
         private bool _opened;
         private bool _transparency;
+        private bool _loopAll;
+        private string _loopRefs;
 
         private int _thumbnailNbs = 0;
         private int _thumbnailNb = 0;
@@ -59,6 +63,18 @@ namespace TT.Export.Thumbnails
             set { _transparency = value; }
         }
 
+        public bool LoopAll
+        {
+            get { return _loopAll; }
+            set { _loopAll = value; }
+        }
+
+        public string LoopRefs
+        {
+            get { return _loopRefs; }
+            set { _loopRefs = value; }
+        }
+
         public int ThumbnailNbs
         {
             get { return _thumbnailNbs; }
@@ -75,14 +91,15 @@ namespace TT.Export.Thumbnails
         {
             InitializeComponent();
         }
-        public MainForm(KD.SDKComponent.AppliComponent appli, Reference reference, string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool executeFromExt = true)
+        public MainForm(KD.SDKComponent.AppliComponent appli, Reference reference, 
+                        string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt = true)
         {
             InitializeComponent();
 
             _appli = appli;
             _reference = reference;
             InitForm(_reference.CatalogFileName);
-            InitMembers(viewMode, xRes, yRes, antiAliasing, opened, executeFromExt);
+            InitMembers(viewMode, xRes, yRes, antiAliasing, opened, loopAll, executeFromExt);
         }
 
 
@@ -94,7 +111,7 @@ namespace TT.Export.Thumbnails
             //this.version_LAB.Text = assemblyFullNameSplit[1]; // "Version : " + System.Reflection.Assembly.GetCallingAssembly(); //this.ProductVersion;
             this.transparency_CHB.CheckState = CheckState.Checked;
         }
-        private void InitMembers(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool executeFromExt = true)
+        private void InitMembers(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt = true)
         {
             _viewMode = "3D";
             _xRes = "84";
@@ -103,6 +120,10 @@ namespace TT.Export.Thumbnails
             _antiAliasing = "3";
             _opened = true;
             _transparency = true;
+            _loopAll = true;
+            _loopRefs = String.Empty;
+            _webCatalogURL = _appli.Catalog.GetInfo(KD.SDK.CatalogEnum.InfoId.WEBCATALOG_URL);
+
 
             if (executeFromExt)
             {
@@ -110,40 +131,66 @@ namespace TT.Export.Thumbnails
                 _xRes = xRes;
                 _yRes = yRes;                
                 _antiAliasing = antiAliasing;
-                _opened = opened;                
+                _opened = opened; 
+                _loopAll = loopAll;
             }
-
 
             this.DialogResult = DialogResult.None;
         }
 
-        public void UpdateForm(int thumbnailNb)
+        private long Main(BackgroundWorker worker, DoWorkEventArgs e)
         {
-            this._thumbnailNb = thumbnailNb;
-            this.status_LAB2.Text = "Export Nb: " + this.ThumbnailNb.ToString() + KD.StringTools.Format.Spaced(KD.StringTools.Const.Slatch) + this.ThumbnailNbs.ToString();          
-            this.Focus();
-            //this.Refresh();
-            this.status_SST.Refresh();
-          
+            if (this.status_BGW.CancellationPending)
+            {               
+                return 100;
+            }
+            else
+            {
+                this.SetParameters();
+                //this.UpdateForm(0);
+               
+                this.status_BGW.ReportProgress(0);
+                this.Export(_reference.CatalogFileName);
+                //if (this.Terminate())
+                //{
+                //    this.UploadToServer();
+                //}
+                this.DialogCanceled();
+                this.EndExport();
+            }
+            return 100;
         }
-        
+
+        //public void UpdateForm(int thumbnailNb)
+        //{
+        //    this._thumbnailNb = thumbnailNb;
+        //    this.Status_LAB2.Text = "Export Nb: " + this.ThumbnailNb.ToString() + KD.StringTools.Format.Spaced(KD.StringTools.Const.Slatch) + this.ThumbnailNbs.ToString();
+
+        //    //this.Parameters_GBX.Refresh();
+        //    this.status_SST.Refresh();
+        //    this.Update();
+        //    this.Refresh();
+        //}
+
         private void SetParameters()
         {
-            if (this.viewmode2D_RBT.Checked)
+            if (this.Viewmode2D_RBT.Checked)
             {
                 _viewMode = "2D";
             }
-            else if (this.viewmode3D_RBT.Checked)
+            else if (this.Viewmode3D_RBT.Checked)
             {
                 _viewMode = "3D";
             }
 
-            _xRes = this.xRes_TBX.Text;
-            _yRes = this.yRes_TBX.Text;
+            _xRes = this.XRes_TBX.Text;
+            _yRes = this.YRes_TBX.Text;
             _backGroundColor = this.backGround_TBX.Text;
-            _antiAliasing = this.antiAliasing_TBX.Text;
-            _opened = this.open_RBT.Checked;
+            _antiAliasing = this.AntiAliasing_TBX.Text;
+            _opened = this.Open_RBT.Checked;
             _transparency = this.transparency_CHB.Checked;
+            _loopAll = this.LoopAll_RBT.Checked;
+            _loopRefs = this.LoopRefs_TBX.Text;
         }
 
         public void Export(string catalogFileName)
@@ -161,37 +208,115 @@ namespace TT.Export.Thumbnails
 
                 for (int k = 1; k <= this.ThumbnailNbs; k++)//
                 {
-                    int clusterRank = k - KD.CatalogProperties.Const.valueToBaseIndex;
-                    _reference = new Reference(_appli, clusterRank, 0);
-                                       
-                    for (int m = 1; m <= _reference.Block_ArticleNb; m++)
+                    if (this.status_BGW.CancellationPending)
                     {
-                        this.UpdateForm(k);
+                        return;
+                    }
+                    else
+                    {
+                        int clusterRank = k - KD.CatalogProperties.Const.valueToBaseIndex;
+                        _reference = new Reference(_appli, clusterRank, 0);
 
-                        int lineRank = m - KD.CatalogProperties.Const.valueToBaseIndex;
-                        _reference = new Reference(_appli, clusterRank, lineRank);
-
-                        export = new Export(_reference);
-
-                        if (export.IsValid(this.ViewMode) && export.IsGraphic())
+                        for (int m = 1; m <= _reference.Block_ArticleNb; m++)
                         {
-                            export.ExportDirectImage();
-                        }                       
-                    }                   
+                            //this.UpdateForm(k);
+                            this.status_BGW.ReportProgress(k);
 
+                            int lineRank = m - KD.CatalogProperties.Const.valueToBaseIndex;
+                            _reference = new Reference(_appli, clusterRank, lineRank);
+
+                            export = new Export(_reference);
+
+                            if (export.IsValid(this.ViewMode) && export.IsGraphic())
+                            {
+                                if (!this.LoopAll)
+                                {
+                                    if (!String.IsNullOrEmpty(this.LoopRefs))
+                                    {
+                                        _loopRefs = _loopRefs.Replace("\r", String.Empty);
+                                        _loopRefs = _loopRefs.Replace("\n", String.Empty);
+
+                                        string[] loopRefs = this.LoopRefs.Split(KD.CharTools.Const.SemiColon);
+                                        if (loopRefs.Length > 0)
+                                        {
+                                            foreach (string loopRef in loopRefs)
+                                            {
+                                                if (_reference.Article_Key == loopRef)
+                                                {
+                                                    export.ExportDirectImage();
+                                                    _loopRefs = _loopRefs.Replace(loopRef, String.Empty);
+                                                    _loopRefs = _loopRefs.Replace(";;", ";");
+                                                    _loopRefs = _loopRefs.Trim(';');
+                                                    _loopRefs = _loopRefs.Trim();
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    export.ExportDirectImage();
+                                }
+                            }
+                        }
+                    }
                 }
 
-                this.UpdateForm(_thumbnailNbs);
-               
-                System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Arrow;
-
-                System.Windows.Forms.MessageBox.Show("Terminé.", "Information", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                //this.UpdateForm(this.ThumbnailNbs);  
+                this.status_BGW.ReportProgress(this.ThumbnailNbs);
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show(ex.Message);
-                //throw;
+                System.Windows.Forms.MessageBox.Show(ex.Message);             
             }
+        }
+
+        //private bool Terminate()
+        //{
+        //    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Arrow;
+
+        //    DialogResult dialog = System.Windows.Forms.MessageBox.Show("Terminé." + Environment.NewLine + "Voulez-vous Uploader les vignettes à l'URL suivante ?" +
+        //        Environment.NewLine + _webCatalogURL, "Information", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question);
+
+        //    if (dialog == DialogResult.Yes && !String.IsNullOrEmpty(_webCatalogURL))
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //}
+
+        //private bool Terminate()
+        //{
+        //    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Arrow;
+
+        //    DialogResult dialog = System.Windows.Forms.MessageBox.Show("Terminé.", "Information", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+
+        //    return false;
+        //}
+
+        private void UploadToServer()
+        {
+            string[] webCatUrl = _webCatalogURL.Split(KD.CharTools.Const.QuestionMark);
+
+            try
+            {
+                //copy not to a url
+                System.IO.File.Copy(TT.Export.Thumbnails.Export.exportDir, webCatUrl[0]);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erreur de transfert: " + ex.Message);
+                
+            }
+            
         }
 
         public void DialogCanceled()
@@ -208,30 +333,31 @@ namespace TT.Export.Thumbnails
         // Form
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this.xRes_TBX.Text = this.Xres;
-            this.yRes_TBX.Text = this.Yres;
+            this.XRes_TBX.Text = this.Xres;
+            this.YRes_TBX.Text = this.Yres;
             this.backGround_TBX.Text = this.BackGroundColor;
-            this.antiAliasing_TBX.Text = this.AntiAliasing;
-            this.open_RBT.Checked = this.Opened;
+            this.AntiAliasing_TBX.Text = this.AntiAliasing;
+            this.Open_RBT.Checked = this.Opened;
             this.transparency_CHB.Checked = this.Transparency;
+
+            this.Ok_BTN.Enabled = true;
         }
 
-        private void ok_BTN_Click(object sender, EventArgs e)
+        private void Ok_BTN_Click(object sender, EventArgs e)
         {
-            this.SetParameters();
-            this.UpdateForm(0);
-            this.Export(_reference.CatalogFileName);
+            //this.Main();
+            this.Ok_BTN.Enabled = false;
+            this.status_BGW.RunWorkerAsync();
+        }
+
+        private void Cancel_BTN_Click(object sender, EventArgs e)
+        {
+            this.status_BGW.CancelAsync();
             this.DialogCanceled();
             this.EndExport();
         }
 
-        private void cancel_BTN_Click(object sender, EventArgs e)
-        {
-            this.DialogCanceled();
-            this.EndExport();
-        }
-
-        private void transparency_CHB_CheckedChanged(object sender, EventArgs e)
+        private void Transparency_CHB_CheckedChanged(object sender, EventArgs e)
         {
             if (this.transparency_CHB.Checked)
             {
@@ -258,7 +384,7 @@ namespace TT.Export.Thumbnails
             }
         }
 
-        private void parameters_GBX_Enter(object sender, EventArgs e)
+        private void Parameters_GBX_Enter(object sender, EventArgs e)
         {
             if (Keyboard.IsKeyDown(Key.Escape))
             {
@@ -293,16 +419,61 @@ namespace TT.Export.Thumbnails
 
             if (result == DialogResult.OK)
             {
-                this.cancel_BTN.PerformClick();
+                this.Cancel_BTN.PerformClick();
             }
         }
 
-        private void version_LNK_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void Version_LNK_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string[] assemblyFullName = System.Reflection.Assembly.GetExecutingAssembly().ToString().Split(KD.CharTools.Const.Comma);
             string[] assemblyVersion = assemblyFullName[1].Split(KD.CharTools.Const.EqualSign);
             MessageBox.Show("Version: " + assemblyVersion[1], "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        private void LoopAll_RBT_CheckedChanged(object sender, EventArgs e)
+        {
+            if (LoopAll_RBT.Checked)
+            {
+                _loopAll = true;
+                this.LoopRefs_TBX.Enabled = false;              
+            }
+            else
+            {
+                _loopAll = false;
+                this.LoopRefs_TBX.Enabled = true;
+            }
+        }
+
+        private void status_BGW_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = new BackgroundWorker();
+            e.Result = this.Main(worker, e); // do your long operation here   
+        }
+
+        private void status_BGW_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if (this.status_BGW.CancellationPending)
+            {
+                this.status_BGW.CancelAsync();
+            }
+            else
+            {
+                this._thumbnailNbs = this.ThumbnailNbs;
+                this._thumbnailNb = e.ProgressPercentage;//  thumbnailNb;
+                this.Status_LAB2.Text = "Export Nb: " + this.ThumbnailNb.ToString() + KD.StringTools.Format.Spaced(KD.StringTools.Const.Slatch) + this.ThumbnailNbs.ToString();
+                              
+                this.status_SST.Refresh();              
+            }
+        }
+
+        private void status_BGW_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Arrow;
+
+            DialogResult dialog = System.Windows.Forms.MessageBox.Show("Terminé.", "Information", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+
+        }
+
     }
 
     

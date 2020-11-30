@@ -15,10 +15,12 @@ namespace TT.Export.Thumbnails
         private const string _3D = "3D";
         private const string _2DEqual = "2D=";
         private const string _3DEqual = "3D=";
+        private const string moy_Vignette = "moy1";
+        private const string big_Vignette = "big1";
 
         private static KD.SDKComponent.AppliComponent _appli = null;
         
-        private static string exportDir = String.Empty;
+        public static string exportDir = String.Empty;
         private static string _exportByResDir = String.Empty;
         private static int jpegQuality = 100;
         private static string extension = KD.IO.File.Extension.Png;
@@ -96,7 +98,18 @@ namespace TT.Export.Thumbnails
             _opened = mainForm.Opened;
             _transparency = mainForm.Transparency;
 
-            _exportByResDir = CatalogFileName + KD.StringTools.Const.Underscore + _xRes + "x" + _yRes;
+            //_exportByResDir = CatalogFileName + KD.StringTools.Const.Underscore + _xRes + "x" + _yRes;
+            string bigOrmoy = _xRes + "x" + _yRes;
+
+            if (_xRes == 84 && _yRes == 84)
+            {
+                bigOrmoy = moy_Vignette;
+            }
+            else if (_xRes == 220 && _yRes == 220)
+            {
+                bigOrmoy = big_Vignette;
+            }
+            _exportByResDir = System.IO.Path.Combine(CatalogFileName, bigOrmoy);
         }
         #endregion
        
@@ -129,28 +142,10 @@ namespace TT.Export.Thumbnails
             string referenceKey = this.ReplaceProhibitedCharacter(reference);
             string file = System.IO.Path.Combine(exportDir, referenceKey + extension);
 
-
-            //result = (_appli.Scene.FileExportCatalogImage(CatalogFileName,
-            //                                                         reference,
-            //                                                         handing,
-            //                                                         _opened,
-            //                                                         viewMode,
-            //                                                         file,
-            //                                                         _xRes,
-            //                                                         _yRes,
-            //                                                         _backGroundColor,
-            //                                                         _transparency,
-            //                                                         jpegQuality,
-            //                                                         _antiAliasing));
-
             int articleRank = _appli.Catalog.TableGetLineRankFromName(KD.SDK.CatalogEnum.TableId.ARTICLES, (int)KD.SDK.CatalogEnum.ClusterRankType.CLUSTER_FROM_ITEM, 0, reference, false);
 
             if (!imageDoneList.Contains(reference + KD.StringTools.Const.SemiColon + Export.leftHanding))
             {
-
-            //}
-            //if (this.Reference.Article_Hinge != _appli.GetTranslatedText(Export.rightHanding))
-            //{
                 result = (_appli.Catalog.FileExportImage(articleRank,
                                                             _opened,
                                                             viewMode,
