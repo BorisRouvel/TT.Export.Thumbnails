@@ -35,10 +35,9 @@
             this.Cancel_BTN = new System.Windows.Forms.Button();
             this.OpenCatalog_OFD = new System.Windows.Forms.OpenFileDialog();
             this.StatusStrip_SST = new System.Windows.Forms.StatusStrip();
-            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.SectionCode_LBX = new System.Windows.Forms.ListBox();
-            this.SectionName_LBX = new System.Windows.Forms.ListBox();
+            this.Status_TSPB = new System.Windows.Forms.ToolStripProgressBar();
+            this.Status_TSSL = new System.Windows.Forms.ToolStripStatusLabel();
+            this.Status_BGW = new System.ComponentModel.BackgroundWorker();
             this.MainForm_GBX.SuspendLayout();
             this.StatusStrip_SST.SuspendLayout();
             this.SuspendLayout();
@@ -48,13 +47,11 @@
             this.MainForm_GBX.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.MainForm_GBX.Controls.Add(this.SectionName_LBX);
-            this.MainForm_GBX.Controls.Add(this.SectionCode_LBX);
             this.MainForm_GBX.Controls.Add(this.CatalogName_LAB);
             this.MainForm_GBX.Controls.Add(this.OpenCatalog_BTN);
             this.MainForm_GBX.Location = new System.Drawing.Point(12, 12);
             this.MainForm_GBX.Name = "MainForm_GBX";
-            this.MainForm_GBX.Size = new System.Drawing.Size(378, 267);
+            this.MainForm_GBX.Size = new System.Drawing.Size(280, 75);
             this.MainForm_GBX.TabIndex = 0;
             this.MainForm_GBX.TabStop = false;
             this.MainForm_GBX.Text = "Catalogue :";
@@ -81,7 +78,7 @@
             // Accept_BTN
             // 
             this.Accept_BTN.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.Accept_BTN.Location = new System.Drawing.Point(122, 285);
+            this.Accept_BTN.Location = new System.Drawing.Point(73, 93);
             this.Accept_BTN.Name = "Accept_BTN";
             this.Accept_BTN.Size = new System.Drawing.Size(75, 23);
             this.Accept_BTN.TabIndex = 1;
@@ -93,7 +90,7 @@
             // 
             this.Cancel_BTN.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.Cancel_BTN.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel_BTN.Location = new System.Drawing.Point(203, 285);
+            this.Cancel_BTN.Location = new System.Drawing.Point(154, 93);
             this.Cancel_BTN.Name = "Cancel_BTN";
             this.Cancel_BTN.Size = new System.Drawing.Size(75, 23);
             this.Cancel_BTN.TabIndex = 2;
@@ -104,40 +101,32 @@
             // StatusStrip_SST
             // 
             this.StatusStrip_SST.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripProgressBar1,
-            this.toolStripStatusLabel1});
-            this.StatusStrip_SST.Location = new System.Drawing.Point(0, 311);
+            this.Status_TSPB,
+            this.Status_TSSL});
+            this.StatusStrip_SST.Location = new System.Drawing.Point(0, 119);
             this.StatusStrip_SST.Name = "StatusStrip_SST";
-            this.StatusStrip_SST.Size = new System.Drawing.Size(402, 22);
+            this.StatusStrip_SST.Size = new System.Drawing.Size(304, 22);
             this.StatusStrip_SST.TabIndex = 3;
             this.StatusStrip_SST.Text = "statusStrip1";
             // 
-            // toolStripProgressBar1
+            // Status_TSPB
             // 
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(200, 16);
+            this.Status_TSPB.Name = "Status_TSPB";
+            this.Status_TSPB.Size = new System.Drawing.Size(200, 16);
             // 
-            // toolStripStatusLabel1
+            // Status_TSSL
             // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(26, 17);
-            this.toolStripStatusLabel1.Text = "0 %";
+            this.Status_TSSL.Name = "Status_TSSL";
+            this.Status_TSSL.Size = new System.Drawing.Size(26, 17);
+            this.Status_TSSL.Text = "0 %";
             // 
-            // SectionCode_LBX
+            // Status_BGW
             // 
-            this.SectionCode_LBX.FormattingEnabled = true;
-            this.SectionCode_LBX.Location = new System.Drawing.Point(6, 56);
-            this.SectionCode_LBX.Name = "SectionCode_LBX";
-            this.SectionCode_LBX.Size = new System.Drawing.Size(86, 199);
-            this.SectionCode_LBX.TabIndex = 2;
-            // 
-            // SectionName_LBX
-            // 
-            this.SectionName_LBX.FormattingEnabled = true;
-            this.SectionName_LBX.Location = new System.Drawing.Point(98, 56);
-            this.SectionName_LBX.Name = "SectionName_LBX";
-            this.SectionName_LBX.Size = new System.Drawing.Size(158, 199);
-            this.SectionName_LBX.TabIndex = 3;
+            this.Status_BGW.WorkerReportsProgress = true;
+            this.Status_BGW.WorkerSupportsCancellation = true;
+            this.Status_BGW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.Status_BGW_DoWork);
+            this.Status_BGW.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.Status_BGW_ProgressChanged);
+            this.Status_BGW.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Status_BGW_RunWorkerCompleted);
             // 
             // MainForm
             // 
@@ -145,11 +134,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel_BTN;
-            this.ClientSize = new System.Drawing.Size(402, 333);
+            this.ClientSize = new System.Drawing.Size(304, 141);
             this.Controls.Add(this.StatusStrip_SST);
             this.Controls.Add(this.Cancel_BTN);
             this.Controls.Add(this.Accept_BTN);
             this.Controls.Add(this.MainForm_GBX);
+            this.MaximumSize = new System.Drawing.Size(560, 420);
+            this.MinimumSize = new System.Drawing.Size(320, 180);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Webisation Autonome";
@@ -171,11 +162,10 @@
         private System.Windows.Forms.Button Cancel_BTN;
         private System.Windows.Forms.OpenFileDialog OpenCatalog_OFD;
         private System.Windows.Forms.StatusStrip StatusStrip_SST;
-        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripProgressBar Status_TSPB;
+        private System.Windows.Forms.ToolStripStatusLabel Status_TSSL;
         private System.Windows.Forms.Label CatalogName_LAB;
-        private System.Windows.Forms.ListBox SectionName_LBX;
-        private System.Windows.Forms.ListBox SectionCode_LBX;
+        private System.ComponentModel.BackgroundWorker Status_BGW;
     }
 }
 
