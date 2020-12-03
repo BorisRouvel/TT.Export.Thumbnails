@@ -101,7 +101,7 @@ namespace TT.Export.Thumbnails
         {            
             reference = new KD.CatalogProperties.Reference(this.CurrentAppli, this.CurrentAppli.MobiScriptCatalogGetInfo(KD.SDK.AppliEnum.MSCatalogInfoId.FILENAME));
 
-            if (string.IsNullOrEmpty(reference.CatalogFileName))
+            if (string.IsNullOrEmpty(reference.CatalogFilePath))
             {
                 System.Windows.Forms.MessageBox.Show("Vous devez ouvrir un catalogue !", "Information", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
                 //System.Windows.Forms.MessageBox.Show(MessageFormTranslate.TranslateText(PlugTextConst.PLUGMSG02TEXT),
@@ -131,7 +131,7 @@ namespace TT.Export.Thumbnails
             }
             else
             {
-                this.mainForm.Export(reference.CatalogFileName);
+                this.mainForm.Export(reference.CatalogFilePath);
                 this.mainForm.DialogCanceled();
             }
 

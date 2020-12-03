@@ -68,6 +68,12 @@
       <Link>Src\Model\ModelWrapper.cs</Link>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="..\..\..\Plugins.Core\src\SDK\CatalogHelper.cs">
+      <Link>Src\SDK\CatalogHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Plugins.Core\src\SDK\DicoHelper.cs">
+      <Link>Src\SDK\DicoHelper.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Plugins.Core\src\SDK\FilterBuilder.cs">
       <Link>Src\SDK\FilterBuilder.cs</Link>
     </Compile>
@@ -103,6 +109,7 @@
       <Link>Nub\Model\SortedArticle.cs</Link>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CsvManage.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +118,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SceneInfo.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -122,6 +130,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -135,6 +144,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\2002.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\web.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

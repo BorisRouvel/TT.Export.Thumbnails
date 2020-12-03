@@ -115,7 +115,7 @@ namespace TT.Export.Thumbnails
        
         public bool ExtractPresentationScene()
         {
-            string CatalogFileNamePath = System.IO.Path.Combine(_appli.CatalogDir, CatalogFileName) + KD.CatalogProperties.Const.catalogExtension;
+            string CatalogFileNamePath = System.IO.Path.Combine(_appli.CatalogDir, CatalogFileName) + KD.CatalogProperties.Const.CatalogExtension;
             string SceneFileNamePath = System.IO.Path.Combine(_appli.CatalogDir, CatalogFileName) + SceneExtension;
             bool ok = _appli.CatalogExportResourceFromName(CatalogFileNamePath, SceneFileNamePath, true);
             //bool ok = _appli.Catalog.FileExportResourceFromName(SceneFileNamePath, true);
@@ -126,7 +126,7 @@ namespace TT.Export.Thumbnails
         public bool LoadPresentationScene()
         {
             bool ok = false;
-            string CatalogFileNamePath = System.IO.Path.Combine(_appli.CatalogDir, CatalogFileName) + KD.CatalogProperties.Const.catalogExtension;
+            string CatalogFileNamePath = System.IO.Path.Combine(_appli.CatalogDir, CatalogFileName) + KD.CatalogProperties.Const.CatalogExtension;
             if (System.IO.File.Exists(CatalogFileNamePath))
             {
                 ok = _appli.Scene.FileLoadCatalogScene(CatalogFileNamePath);
@@ -186,7 +186,7 @@ namespace TT.Export.Thumbnails
 
         public bool IsValid(string form)
         {
-            if (this.Reference.Section_Name.StartsWith(KD.CatalogProperties.Const.arobase))
+            if (this.Reference.Section_Name.StartsWith(KD.CatalogProperties.Const.Arobase))
             {
                 return false;
             }

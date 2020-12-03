@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MainForm_GBX = new System.Windows.Forms.GroupBox();
             this.CatalogName_LAB = new System.Windows.Forms.Label();
-            this.OpenCatalog_BTN = new System.Windows.Forms.Button();
             this.Accept_BTN = new System.Windows.Forms.Button();
             this.Cancel_BTN = new System.Windows.Forms.Button();
             this.OpenCatalog_OFD = new System.Windows.Forms.OpenFileDialog();
@@ -38,6 +38,8 @@
             this.Status_TSPB = new System.Windows.Forms.ToolStripProgressBar();
             this.Status_TSSL = new System.Windows.Forms.ToolStripStatusLabel();
             this.Status_BGW = new System.ComponentModel.BackgroundWorker();
+            this.Version_LNK = new System.Windows.Forms.LinkLabel();
+            this.OpenCatalog_BTN = new System.Windows.Forms.Button();
             this.MainForm_GBX.SuspendLayout();
             this.StatusStrip_SST.SuspendLayout();
             this.SuspendLayout();
@@ -59,21 +61,11 @@
             // CatalogName_LAB
             // 
             this.CatalogName_LAB.AutoSize = true;
-            this.CatalogName_LAB.Location = new System.Drawing.Point(87, 32);
+            this.CatalogName_LAB.Location = new System.Drawing.Point(58, 35);
             this.CatalogName_LAB.Name = "CatalogName_LAB";
             this.CatalogName_LAB.Size = new System.Drawing.Size(35, 13);
             this.CatalogName_LAB.TabIndex = 1;
             this.CatalogName_LAB.Text = "Nom :";
-            // 
-            // OpenCatalog_BTN
-            // 
-            this.OpenCatalog_BTN.Location = new System.Drawing.Point(6, 27);
-            this.OpenCatalog_BTN.Name = "OpenCatalog_BTN";
-            this.OpenCatalog_BTN.Size = new System.Drawing.Size(75, 23);
-            this.OpenCatalog_BTN.TabIndex = 0;
-            this.OpenCatalog_BTN.Text = "Ouvrir";
-            this.OpenCatalog_BTN.UseVisualStyleBackColor = true;
-            this.OpenCatalog_BTN.Click += new System.EventHandler(this.OpenCatalog_BTN_Click);
             // 
             // Accept_BTN
             // 
@@ -111,8 +103,9 @@
             // 
             // Status_TSPB
             // 
+            this.Status_TSPB.Margin = new System.Windows.Forms.Padding(1, 3, 10, 3);
             this.Status_TSPB.Name = "Status_TSPB";
-            this.Status_TSPB.Size = new System.Drawing.Size(200, 16);
+            this.Status_TSPB.Size = new System.Drawing.Size(230, 16);
             // 
             // Status_TSSL
             // 
@@ -128,6 +121,27 @@
             this.Status_BGW.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.Status_BGW_ProgressChanged);
             this.Status_BGW.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Status_BGW_RunWorkerCompleted);
             // 
+            // Version_LNK
+            // 
+            this.Version_LNK.AutoSize = true;
+            this.Version_LNK.Location = new System.Drawing.Point(9, 98);
+            this.Version_LNK.Name = "Version_LNK";
+            this.Version_LNK.Size = new System.Drawing.Size(13, 13);
+            this.Version_LNK.TabIndex = 4;
+            this.Version_LNK.TabStop = true;
+            this.Version_LNK.Text = "?";
+            this.Version_LNK.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Version_LNK_LinkClicked);
+            // 
+            // OpenCatalog_BTN
+            // 
+            this.OpenCatalog_BTN.Image = global::TT.WebisationStandalone.Properties.Resources._2002;
+            this.OpenCatalog_BTN.Location = new System.Drawing.Point(6, 27);
+            this.OpenCatalog_BTN.Name = "OpenCatalog_BTN";
+            this.OpenCatalog_BTN.Size = new System.Drawing.Size(46, 32);
+            this.OpenCatalog_BTN.TabIndex = 0;
+            this.OpenCatalog_BTN.UseVisualStyleBackColor = true;
+            this.OpenCatalog_BTN.Click += new System.EventHandler(this.OpenCatalog_BTN_Click);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.Cancel_BTN;
@@ -135,10 +149,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel_BTN;
             this.ClientSize = new System.Drawing.Size(304, 141);
+            this.Controls.Add(this.Version_LNK);
             this.Controls.Add(this.StatusStrip_SST);
             this.Controls.Add(this.Cancel_BTN);
             this.Controls.Add(this.Accept_BTN);
             this.Controls.Add(this.MainForm_GBX);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(560, 420);
             this.MinimumSize = new System.Drawing.Size(320, 180);
             this.Name = "MainForm";
@@ -166,6 +182,7 @@
         private System.Windows.Forms.ToolStripStatusLabel Status_TSSL;
         private System.Windows.Forms.Label CatalogName_LAB;
         private System.ComponentModel.BackgroundWorker Status_BGW;
+        private System.Windows.Forms.LinkLabel Version_LNK;
     }
 }
 

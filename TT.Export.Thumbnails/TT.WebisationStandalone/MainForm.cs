@@ -1,33 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
 using KD.SDK;
 using KD.CatalogProperties;
+using KD.CsvHelper;
+using KD.DicoHelper;
 
 
 namespace TT.WebisationStandalone
 {
     public partial class MainForm : Form 
-    {
+    {       
         private Appli appli = new Appli(KD.InSitu.Ini.Const.FileNameSpaceIni);       
-        private Reference reference = null;       
-
+        private Reference reference = null; 
+        private CsvManage csvManage = null;
+        private CsvFileWriter csvFile = null;
+        private SceneInfo sceneInfo = null;
+       
         string catalogFilePath = String.Empty;
         string catalogFileName = String.Empty;
+        string catalogFileDir = String.Empty;
 
-        KD.CsvHelper.CsvFileWriter csvFile = null;
-        KD.CsvHelper.CsvRow catalogRow = null;
-        KD.CsvHelper.CsvRow sectionRow = null;
-        KD.CsvHelper.CsvRow blocRow = null;
-        KD.CsvHelper.CsvRow articleRow = null;
+        public static bool IsSceneCreate = false;
 
 
         public MainForm()
@@ -52,24 +48,30 @@ namespace TT.WebisationStandalone
             this.Status_TSPB.Maximum = reference.SectionLinesNb - 1;
             this.Accept_BTN.Enabled = true;
         }
+
         private void InitMembers()
         {
             reference = null;
+            if (csvFile != null)
+            {
+                csvFile.Dispose();
+            }
             csvFile = null;
+            csvManage = null;
+            sceneInfo = null;
             catalogFilePath = String.Empty;
             catalogFileName = String.Empty;
-            catalogRow = null;
-            sectionRow = null;
-            blocRow = null;
-            articleRow = null;           
+            catalogFileDir = String.Empty;
             this.Status_TSPB.Value = 0;          
             this.Status_TSSL.Text = KD.StringTools.Const.Zero + KD.StringTools.Const.WhiteSpace + KD.StringTools.Const.Percent;            
         }
         private void SetMembers()
-        {
+        {           
             reference = new Reference(appli, catalogFilePath);
-            csvFile = new KD.CsvHelper.CsvFileWriter("WebInfo.csv");
+            csvFile = new CsvFileWriter(CsvManage.Const.csvFileName);
+
             catalogFileName = Path.GetFileName(catalogFilePath);
+            catalogFileDir = Path.GetDirectoryName(catalogFilePath);
         }
 
         private bool OpenCatalog()
@@ -78,7 +80,7 @@ namespace TT.WebisationStandalone
             this.OpenCatalog_OFD.Filter = "Fichiers Catalogue" + KD.StringTools.Const.WhiteSpace + 
                                                                  KD.StringTools.Const.Pipe + 
                                                                  KD.StringTools.Const.Wildcard + 
-                                                                 KD.CatalogProperties.Const.catalogExtension;
+                                                                 KD.CatalogProperties.Const.CatalogExtension;
 
             DialogResult dialogResult = this.OpenCatalog_OFD.ShowDialog();
 
@@ -95,67 +97,13 @@ namespace TT.WebisationStandalone
             }
             return false;
         }
-        private bool IsSectionValid(string sectionCode, string sectionName)
+        private void UpdateSpaceINI()
         {
-            //!sectionCode.StartsWith(KD.CatalogProperties.Const.arobase) &&  && !sectionName.StartsWith(KD.CatalogProperties.Const.arobase)
-
-            if (!String.IsNullOrEmpty(sectionName))
-            {
-                return true;
-            }
-            return false;
+            string iniPath = Path.Combine(Application.StartupPath, KD.InSitu.Ini.Const.FileNameSpaceIni);
+            KD.Config.IniFile iniFile = new KD.Config.IniFile(iniPath);
+            iniFile.WriteValue(KD.CatalogProperties.Const.SectionCatalogs, KD.CatalogProperties.Const.KeyDir, catalogFileDir);
         }
 
-        private void SetCatalogRow()
-        {
-            catalogRow = new KD.CsvHelper.CsvRow();
-           
-            catalogRow.Add(reference.CatalogName);
-            catalogRow.Add(catalogFileName);
-
-            csvFile.WriteRow(catalogRow);
-        }
-        private void SetSectionRow()
-        {
-            sectionRow = new KD.CsvHelper.CsvRow();
-            
-            sectionRow.Add(reference.Section_Name);
-            sectionRow.Add(reference.Section_Code);
-
-            csvFile.WriteRow(sectionRow);         
-        }
-        private void SetBlockRow()
-        {
-            blocRow = new KD.CsvHelper.CsvRow();
-           
-            blocRow.Add(reference.Block_Code);
-
-            string script = reference.Block_Script.ToUpper();
-            string url = String.Empty;
-            if (script.Contains("@URL("))
-            {
-                url = KD.StringTools.Helper.SubString(script, "@URL(", ")");               
-            }
-            blocRow.Add(url);           
-
-            blocRow.Add(reference.Block_Altitude.ToString());
-            blocRow.Add(reference.Block_PoseOnorUnderIndex.ToString());
-            blocRow.Add(reference.Section_Name);
-
-            csvFile.WriteRow(blocRow);           
-        }
-        private void SetArticleRow()
-        {
-            articleRow = new KD.CsvHelper.CsvRow();
-
-            articleRow.Add(reference.Article_Key);
-            articleRow.Add(reference.Article_Hinge);
-            articleRow.Add(reference.Article_Width.ToString());
-            articleRow.Add(reference.Article_Depth.ToString());
-            articleRow.Add(reference.Article_Height.ToString());
-
-            csvFile.WriteRow(articleRow);
-        }
 
         private object Main(BackgroundWorker worker, DoWorkEventArgs e)
         {
@@ -166,9 +114,8 @@ namespace TT.WebisationStandalone
             else
             {
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
-                //this.SetMembers();
-                this.Status_BGW.ReportProgress(0);              
-
+              
+                this.Status_BGW.ReportProgress(0);
                 this.WriteCSVInformations();
             }
             return e.Result;
@@ -179,8 +126,8 @@ namespace TT.WebisationStandalone
             for (int sectionRank = 0; sectionRank <= reference.SectionLinesNb - 1; sectionRank++)
             {
                 reference = new Reference(appli, sectionRank, 0, 0);               
-                int blockNb = reference.Section_BlockNb;
-              
+                int blockNb = reference.Section_BlockNb;                
+
                 for (int blockRank = 0; blockRank <= blockNb - 1; blockRank++)
                 {
                     reference = new Reference(appli, sectionRank, blockRank, 0);                 
@@ -188,14 +135,17 @@ namespace TT.WebisationStandalone
 
                     for (int articleRank = 0; articleRank <= articleNb - 1; articleRank++)
                     {
-                        reference = new Reference(appli, sectionRank, blockRank, articleRank);
+                        int blockLineIndex = appli.Catalog.TableGetFirstLineRankFromClusterRank(CatalogEnum.TableId.BLOCKS, sectionRank);
+                        reference = new Reference(appli, sectionRank, blockRank + blockLineIndex, articleRank);
+                        sceneInfo = new SceneInfo(reference);
+                        csvManage = new CsvManage(csvFile, reference, sceneInfo);
 
-                        if (IsSectionValid(reference.Section_Code, reference.Section_Name))
+                        if (csvManage.IsSectionValid(reference.Section_Code, reference.Section_Name))
                         {
-                            this.SetCatalogRow();
-                            this.SetSectionRow();
-                            this.SetBlockRow();
-                            this.SetArticleRow();
+                            csvManage.SetCatalogRow();
+                            csvManage.SetSectionRow();
+                            csvManage.SetBlockRow();
+                            csvManage.SetArticleRow();
                         }
                     }
                 }
@@ -212,7 +162,8 @@ namespace TT.WebisationStandalone
         }
 
         private void Accept_BTN_Click(object sender, EventArgs e)
-        {           
+        {
+            this.Accept_BTN.Enabled = false;
             this.Status_BGW.RunWorkerAsync();
         }
 
@@ -224,12 +175,14 @@ namespace TT.WebisationStandalone
 
         private void OpenCatalog_BTN_Click(object sender, EventArgs e)
         {
+            this.InitForm();
             this.InitMembers();
 
             if (this.OpenCatalog())
             {
                 this.SetMembers();
                 this.UpdateForm();
+                this.UpdateSpaceINI();
             }
         }
 
@@ -260,6 +213,13 @@ namespace TT.WebisationStandalone
 
             DialogResult dialog = System.Windows.Forms.MessageBox.Show("Terminé.", "Information", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
 
+        }
+
+        private void Version_LNK_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            string[] assemblyFullName = System.Reflection.Assembly.GetExecutingAssembly().ToString().Split(KD.CharTools.Const.Comma);
+            string[] assemblyVersion = assemblyFullName[1].Split(KD.CharTools.Const.EqualSign);
+            MessageBox.Show("Version: " + assemblyVersion[1], "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

@@ -98,7 +98,7 @@ namespace TT.Export.Thumbnails
 
             _appli = appli;
             _reference = reference;
-            InitForm(_reference.CatalogFileName);
+            InitForm(_reference.CatalogFilePath);
             InitMembers(viewMode, xRes, yRes, antiAliasing, opened, loopAll, executeFromExt);
         }
 
@@ -150,7 +150,7 @@ namespace TT.Export.Thumbnails
                 //this.UpdateForm(0);
                
                 this.status_BGW.ReportProgress(0);
-                this.Export(_reference.CatalogFileName);
+                this.Export(_reference.CatalogFilePath);
                 //if (this.Terminate())
                 //{
                 //    this.UploadToServer();
@@ -214,7 +214,7 @@ namespace TT.Export.Thumbnails
                     }
                     else
                     {
-                        int clusterRank = k - KD.CatalogProperties.Const.valueToBaseIndex;
+                        int clusterRank = k - KD.CatalogProperties.Const.ValueToBaseIndex;
                         _reference = new Reference(_appli, clusterRank, 0);
 
                         for (int m = 1; m <= _reference.Block_ArticleNb; m++)
@@ -222,7 +222,7 @@ namespace TT.Export.Thumbnails
                             //this.UpdateForm(k);
                             this.status_BGW.ReportProgress(k);
 
-                            int lineRank = m - KD.CatalogProperties.Const.valueToBaseIndex;
+                            int lineRank = m - KD.CatalogProperties.Const.ValueToBaseIndex;
                             _reference = new Reference(_appli, clusterRank, lineRank);
 
                             export = new Export(_reference);
