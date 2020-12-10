@@ -110,6 +110,7 @@ namespace TT.Export.Thumbnails
                 bigOrmoy = big_Vignette;
             }
             _exportByResDir = System.IO.Path.Combine(CatalogFileName, bigOrmoy);
+            _exportByResDir = _exportByResDir.Replace( KD.CatalogProperties.Const.CatalogExtension, String.Empty);           
         }
         #endregion
        
@@ -239,13 +240,16 @@ namespace TT.Export.Thumbnails
             }
             else
             {
-                exportDir = System.IO.Path.Combine(_appli.CatalogDir, _exportByResDir);
+                string path1 = _appli.CatalogDir;
+                string path2 = _exportByResDir;
+                exportDir = System.IO.Path.Combine(path1, path2);
             }
         }
         private bool IsDirectoryExist()
         {
-            
-            if (System.IO.Directory.Exists(System.IO.Path.Combine(_appli.CatalogDir, _exportByResDir)))
+            string path1 = _appli.CatalogDir;
+            string path2 = _exportByResDir;
+            if (System.IO.Directory.Exists(System.IO.Path.Combine(path1, path2)))
             {
                 return true;
             }
@@ -253,7 +257,9 @@ namespace TT.Export.Thumbnails
         }
         private string CreateDirectory()
         {
-            string dir = System.IO.Path.Combine(_appli.CatalogDir, _exportByResDir);
+            string path1 = _appli.CatalogDir;
+            string path2 = _exportByResDir;
+            string dir = System.IO.Path.Combine(path1, path2);
             System.IO.Directory.CreateDirectory(dir);
 
             return dir;
@@ -267,11 +273,12 @@ namespace TT.Export.Thumbnails
 
             try
             {
-                foreach (string car in ProhibitedCharacterList)
+               
+                foreach (char car in  System.IO.Path.GetInvalidFileNameChars())//ProhibitedCharacterList
                 {
-                    if (nameToCheck.Contains(car))
+                    if (nameToCheck.Contains(car.ToString()))
                     {
-                        nameToCheck = nameToCheck.Replace(car, KD.StringTools.Const.Underscore);
+                        nameToCheck = nameToCheck.Replace(car.ToString(), KD.StringTools.Const.Underscore);
                     }
                 }
             }

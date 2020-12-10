@@ -30,16 +30,19 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MainForm_GBX = new System.Windows.Forms.GroupBox();
+            this.ExportThumbnails_BTN = new System.Windows.Forms.Button();
             this.CatalogName_LAB = new System.Windows.Forms.Label();
+            this.OpenCatalog_BTN = new System.Windows.Forms.Button();
             this.Accept_BTN = new System.Windows.Forms.Button();
             this.Cancel_BTN = new System.Windows.Forms.Button();
             this.OpenCatalog_OFD = new System.Windows.Forms.OpenFileDialog();
             this.StatusStrip_SST = new System.Windows.Forms.StatusStrip();
             this.Status_TSPB = new System.Windows.Forms.ToolStripProgressBar();
             this.Status_TSSL = new System.Windows.Forms.ToolStripStatusLabel();
+            this.Name_TSSL = new System.Windows.Forms.ToolStripStatusLabel();
             this.Status_BGW = new System.ComponentModel.BackgroundWorker();
             this.Version_LNK = new System.Windows.Forms.LinkLabel();
-            this.OpenCatalog_BTN = new System.Windows.Forms.Button();
+            this.ExportThumbnail_LAB = new System.Windows.Forms.Label();
             this.MainForm_GBX.SuspendLayout();
             this.StatusStrip_SST.SuspendLayout();
             this.SuspendLayout();
@@ -49,14 +52,26 @@
             this.MainForm_GBX.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.MainForm_GBX.Controls.Add(this.ExportThumbnail_LAB);
+            this.MainForm_GBX.Controls.Add(this.ExportThumbnails_BTN);
             this.MainForm_GBX.Controls.Add(this.CatalogName_LAB);
             this.MainForm_GBX.Controls.Add(this.OpenCatalog_BTN);
             this.MainForm_GBX.Location = new System.Drawing.Point(12, 12);
             this.MainForm_GBX.Name = "MainForm_GBX";
-            this.MainForm_GBX.Size = new System.Drawing.Size(280, 75);
+            this.MainForm_GBX.Size = new System.Drawing.Size(280, 105);
             this.MainForm_GBX.TabIndex = 0;
             this.MainForm_GBX.TabStop = false;
             this.MainForm_GBX.Text = "Catalogue :";
+            // 
+            // ExportThumbnails_BTN
+            // 
+            this.ExportThumbnails_BTN.Location = new System.Drawing.Point(6, 65);
+            this.ExportThumbnails_BTN.Name = "ExportThumbnails_BTN";
+            this.ExportThumbnails_BTN.Size = new System.Drawing.Size(61, 32);
+            this.ExportThumbnails_BTN.TabIndex = 2;
+            this.ExportThumbnails_BTN.Text = "Vignettes";
+            this.ExportThumbnails_BTN.UseVisualStyleBackColor = true;
+            this.ExportThumbnails_BTN.Click += new System.EventHandler(this.ExportThumbnails_BTN_Click);
             // 
             // CatalogName_LAB
             // 
@@ -66,71 +81,6 @@
             this.CatalogName_LAB.Size = new System.Drawing.Size(35, 13);
             this.CatalogName_LAB.TabIndex = 1;
             this.CatalogName_LAB.Text = "Nom :";
-            // 
-            // Accept_BTN
-            // 
-            this.Accept_BTN.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.Accept_BTN.Location = new System.Drawing.Point(73, 93);
-            this.Accept_BTN.Name = "Accept_BTN";
-            this.Accept_BTN.Size = new System.Drawing.Size(75, 23);
-            this.Accept_BTN.TabIndex = 1;
-            this.Accept_BTN.Text = "Ok";
-            this.Accept_BTN.UseVisualStyleBackColor = true;
-            this.Accept_BTN.Click += new System.EventHandler(this.Accept_BTN_Click);
-            // 
-            // Cancel_BTN
-            // 
-            this.Cancel_BTN.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.Cancel_BTN.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel_BTN.Location = new System.Drawing.Point(154, 93);
-            this.Cancel_BTN.Name = "Cancel_BTN";
-            this.Cancel_BTN.Size = new System.Drawing.Size(75, 23);
-            this.Cancel_BTN.TabIndex = 2;
-            this.Cancel_BTN.Text = "Annuler";
-            this.Cancel_BTN.UseVisualStyleBackColor = true;
-            this.Cancel_BTN.Click += new System.EventHandler(this.Cancel_BTN_Click);
-            // 
-            // StatusStrip_SST
-            // 
-            this.StatusStrip_SST.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Status_TSPB,
-            this.Status_TSSL});
-            this.StatusStrip_SST.Location = new System.Drawing.Point(0, 119);
-            this.StatusStrip_SST.Name = "StatusStrip_SST";
-            this.StatusStrip_SST.Size = new System.Drawing.Size(304, 22);
-            this.StatusStrip_SST.TabIndex = 3;
-            this.StatusStrip_SST.Text = "statusStrip1";
-            // 
-            // Status_TSPB
-            // 
-            this.Status_TSPB.Margin = new System.Windows.Forms.Padding(1, 3, 10, 3);
-            this.Status_TSPB.Name = "Status_TSPB";
-            this.Status_TSPB.Size = new System.Drawing.Size(230, 16);
-            // 
-            // Status_TSSL
-            // 
-            this.Status_TSSL.Name = "Status_TSSL";
-            this.Status_TSSL.Size = new System.Drawing.Size(26, 17);
-            this.Status_TSSL.Text = "0 %";
-            // 
-            // Status_BGW
-            // 
-            this.Status_BGW.WorkerReportsProgress = true;
-            this.Status_BGW.WorkerSupportsCancellation = true;
-            this.Status_BGW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.Status_BGW_DoWork);
-            this.Status_BGW.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.Status_BGW_ProgressChanged);
-            this.Status_BGW.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Status_BGW_RunWorkerCompleted);
-            // 
-            // Version_LNK
-            // 
-            this.Version_LNK.AutoSize = true;
-            this.Version_LNK.Location = new System.Drawing.Point(9, 98);
-            this.Version_LNK.Name = "Version_LNK";
-            this.Version_LNK.Size = new System.Drawing.Size(13, 13);
-            this.Version_LNK.TabIndex = 4;
-            this.Version_LNK.TabStop = true;
-            this.Version_LNK.Text = "?";
-            this.Version_LNK.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Version_LNK_LinkClicked);
             // 
             // OpenCatalog_BTN
             // 
@@ -142,13 +92,96 @@
             this.OpenCatalog_BTN.UseVisualStyleBackColor = true;
             this.OpenCatalog_BTN.Click += new System.EventHandler(this.OpenCatalog_BTN_Click);
             // 
+            // Accept_BTN
+            // 
+            this.Accept_BTN.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.Accept_BTN.Location = new System.Drawing.Point(73, 123);
+            this.Accept_BTN.Name = "Accept_BTN";
+            this.Accept_BTN.Size = new System.Drawing.Size(75, 23);
+            this.Accept_BTN.TabIndex = 1;
+            this.Accept_BTN.Text = "Ok";
+            this.Accept_BTN.UseVisualStyleBackColor = true;
+            this.Accept_BTN.Click += new System.EventHandler(this.Accept_BTN_Click);
+            // 
+            // Cancel_BTN
+            // 
+            this.Cancel_BTN.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.Cancel_BTN.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Cancel_BTN.Location = new System.Drawing.Point(154, 123);
+            this.Cancel_BTN.Name = "Cancel_BTN";
+            this.Cancel_BTN.Size = new System.Drawing.Size(75, 23);
+            this.Cancel_BTN.TabIndex = 2;
+            this.Cancel_BTN.Text = "Annuler";
+            this.Cancel_BTN.UseVisualStyleBackColor = true;
+            this.Cancel_BTN.Click += new System.EventHandler(this.Cancel_BTN_Click);
+            // 
+            // StatusStrip_SST
+            // 
+            this.StatusStrip_SST.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Status_TSPB,
+            this.Status_TSSL,
+            this.Name_TSSL});
+            this.StatusStrip_SST.Location = new System.Drawing.Point(0, 149);
+            this.StatusStrip_SST.Name = "StatusStrip_SST";
+            this.StatusStrip_SST.Size = new System.Drawing.Size(304, 22);
+            this.StatusStrip_SST.TabIndex = 3;
+            this.StatusStrip_SST.Text = "statusStrip1";
+            // 
+            // Status_TSPB
+            // 
+            this.Status_TSPB.Margin = new System.Windows.Forms.Padding(1, 3, 10, 3);
+            this.Status_TSPB.Name = "Status_TSPB";
+            this.Status_TSPB.Size = new System.Drawing.Size(150, 16);
+            this.Status_TSPB.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            // 
+            // Status_TSSL
+            // 
+            this.Status_TSSL.Name = "Status_TSSL";
+            this.Status_TSSL.Size = new System.Drawing.Size(26, 17);
+            this.Status_TSSL.Text = "0 %";
+            // 
+            // Name_TSSL
+            // 
+            this.Name_TSSL.Name = "Name_TSSL";
+            this.Name_TSSL.Size = new System.Drawing.Size(34, 17);
+            this.Name_TSSL.Text = "Nom";
+            // 
+            // Status_BGW
+            // 
+            this.Status_BGW.WorkerReportsProgress = true;
+            this.Status_BGW.WorkerSupportsCancellation = true;
+            this.Status_BGW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.Status_BGW_DoWork);
+            this.Status_BGW.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.Status_BGW_ProgressChanged);
+            this.Status_BGW.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Status_BGW_RunWorkerCompleted);
+            // 
+            // Version_LNK
+            // 
+            this.Version_LNK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Version_LNK.AutoSize = true;
+            this.Version_LNK.Location = new System.Drawing.Point(9, 128);
+            this.Version_LNK.Name = "Version_LNK";
+            this.Version_LNK.Size = new System.Drawing.Size(13, 13);
+            this.Version_LNK.TabIndex = 4;
+            this.Version_LNK.TabStop = true;
+            this.Version_LNK.Text = "?";
+            this.Version_LNK.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Version_LNK_LinkClicked);
+            // 
+            // ExportThumbnail_LAB
+            // 
+            this.ExportThumbnail_LAB.AutoSize = true;
+            this.ExportThumbnail_LAB.Location = new System.Drawing.Point(85, 75);
+            this.ExportThumbnail_LAB.Name = "ExportThumbnail_LAB";
+            this.ExportThumbnail_LAB.Size = new System.Drawing.Size(65, 13);
+            this.ExportThumbnail_LAB.TabIndex = 3;
+            this.ExportThumbnail_LAB.Text = "<==  Cliquez";
+            // 
             // MainForm
             // 
             this.AcceptButton = this.Cancel_BTN;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel_BTN;
-            this.ClientSize = new System.Drawing.Size(304, 141);
+            this.ClientSize = new System.Drawing.Size(304, 171);
             this.Controls.Add(this.Version_LNK);
             this.Controls.Add(this.StatusStrip_SST);
             this.Controls.Add(this.Cancel_BTN);
@@ -183,6 +216,9 @@
         private System.Windows.Forms.Label CatalogName_LAB;
         private System.ComponentModel.BackgroundWorker Status_BGW;
         private System.Windows.Forms.LinkLabel Version_LNK;
+        private System.Windows.Forms.ToolStripStatusLabel Name_TSSL;
+        private System.Windows.Forms.Button ExportThumbnails_BTN;
+        private System.Windows.Forms.Label ExportThumbnail_LAB;
     }
 }
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
 
 using KD.CatalogProperties;
 using KD.CsvHelper;
@@ -11,9 +11,15 @@ namespace TT.WebisationStandalone
     {
         public class Const
         {
-            public const string csvFileName = "WebInfo.csv";
+            public const string sectionCSVFileName = "SECTION.csv";
+            public const string blocCSVFileName = "BLOC.csv";
+            public const string articleCSVFileName = "ARTICLE.csv";
+            public const string translateCSVFileName = "TRANSLATE.csv";
+
             public const string scriptCode_URL = "@URL";
         }
+
+        private static List<string> langSourceList = new List<string>();
 
         private Reference _reference = null;
         private CsvFileWriter _csvFile = null;
@@ -23,7 +29,12 @@ namespace TT.WebisationStandalone
         private CsvRow sectionRow = null;
         private CsvRow blocRow = null;
         private CsvRow articleRow = null;
-        
+        //private CsvRow translateRow = null;
+        private CsvRow translateCatalogNameRow = null;
+        private CsvRow translateSectionNameRow = null;
+        private CsvRow translateBlocNameRow = null;
+        private CsvRow translateBlocDescriptionRow = null;
+
 
         public CsvManage(CsvFileWriter csvFile, Reference reference, SceneInfo sceneInfo)
         {
@@ -39,7 +50,12 @@ namespace TT.WebisationStandalone
             catalogRow = null;
             sectionRow = null;
             blocRow = null;
-            articleRow = null;           
+            articleRow = null;
+            //translateRow = null;
+            translateCatalogNameRow = null;
+            translateSectionNameRow = null;
+            translateBlocNameRow = null;
+            translateBlocDescriptionRow = null;
         }       
 
          public bool IsSectionValid(string sectionCode, string sectionName)
@@ -91,7 +107,7 @@ namespace TT.WebisationStandalone
 
             _csvFile.WriteRow(blocRow);
         }
-        public void SetArticleRow()
+        public void SetArticlePlacedRow()
         {
             articleRow = new CsvRow();
 
@@ -102,17 +118,41 @@ namespace TT.WebisationStandalone
             articleRow.Add(_reference.Article_Height.ToString());
 
             _sceneInfo.GenerateSceneInformations();
-            articleRow = _sceneInfo.SetForArticleRow(articleRow);
+            articleRow.AddRange(_sceneInfo.ArticleRow());
+            
+            _csvFile.WriteRow(articleRow);
+        }
+        public void SetTranslatePlacedRow()
+        {
+            translateCatalogNameRow = new CsvRow();
+            translateSectionNameRow = new CsvRow();
+            translateBlocNameRow = new CsvRow();
+            translateBlocDescriptionRow = new CsvRow();
 
             foreach (string language in DicoRow.AllLanguagesCode)
             {
                 if (language != DicoRow.AllLanguagesCode[0])
                 {
                     _sceneInfo.GenerateSceneInformations(language);
-                    articleRow = _sceneInfo.SetLanguageForArticleRow(articleRow);                  
+                    translateCatalogNameRow.AddRange(_sceneInfo.TranslateCatalogNameRow());
+                    translateSectionNameRow.AddRange(_sceneInfo.TranslateSectionNameRow());
+                    translateBlocNameRow.AddRange(_sceneInfo.TranslateBlocNameRow());
+                    translateBlocDescriptionRow.AddRange(_sceneInfo.TranslateBlocDescriptionRow());                    
                 }
             }
-            _csvFile.WriteRow(articleRow);
+
+            this.WriteTranslateRow(translateCatalogNameRow);
+            this.WriteTranslateRow(translateSectionNameRow);
+            this.WriteTranslateRow(translateBlocNameRow);
+            this.WriteTranslateRow(translateBlocDescriptionRow);
+        }
+        private void WriteTranslateRow(CsvRow row)
+        {
+            if (!langSourceList.Contains(row[0]))
+            {
+                langSourceList.Add(row[0]);
+                _csvFile.WriteRow(row);
+            }
         }
 
     }

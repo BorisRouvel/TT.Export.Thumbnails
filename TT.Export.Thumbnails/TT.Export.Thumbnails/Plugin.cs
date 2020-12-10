@@ -89,17 +89,24 @@ namespace TT.Export.Thumbnails
        
         public bool ExecuteWebThumbnailExportInside(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll)
         {
-            this.ExecuteWebThumbnail(viewMode, xRes, yRes, antiAliasing, opened, loopAll, false);
+            this.ExecuteWebThumbnail(viewMode, xRes, yRes, antiAliasing, opened, loopAll, false, String.Empty);
             return true;
         }
-        public bool ExecuteWebThumbnailExport(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll)
+        public bool ExecuteWebThumbnailExport(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, string catalogFilePath = "")
         {
-            this.ExecuteWebThumbnail(viewMode, xRes, yRes, antiAliasing, opened, loopAll, true);
+            this.ExecuteWebThumbnail(viewMode, xRes, yRes, antiAliasing, opened, loopAll, true, catalogFilePath);
             return true;
         }
-        public bool ExecuteWebThumbnail(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt)
-        {            
-            reference = new KD.CatalogProperties.Reference(this.CurrentAppli, this.CurrentAppli.MobiScriptCatalogGetInfo(KD.SDK.AppliEnum.MSCatalogInfoId.FILENAME));
+        public bool ExecuteWebThumbnail(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt, string catalogFilePath = "")
+        {
+            if (String.IsNullOrEmpty(catalogFilePath))
+            {
+                reference = new KD.CatalogProperties.Reference(this.CurrentAppli, this.CurrentAppli.MobiScriptCatalogGetInfo(KD.SDK.AppliEnum.MSCatalogInfoId.FILENAME));
+            }
+            else
+            {
+                reference = new KD.CatalogProperties.Reference(this.CurrentAppli, catalogFilePath);
+            }
 
             if (string.IsNullOrEmpty(reference.CatalogFilePath))
             {

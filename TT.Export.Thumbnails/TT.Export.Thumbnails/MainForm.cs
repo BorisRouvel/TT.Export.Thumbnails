@@ -24,8 +24,8 @@ namespace TT.Export.Thumbnails
         private bool _loopAll;
         private string _loopRefs;
 
-        private int _thumbnailNbs = 0;
-        private int _thumbnailNb = 0;
+        private static int _thumbnailNbs = 0;
+        private static int _thumbnailNb = 0;
 
         public string ViewMode
         {
@@ -75,12 +75,12 @@ namespace TT.Export.Thumbnails
             set { _loopRefs = value; }
         }
 
-        public int ThumbnailNbs
+        public static int ThumbnailNbs
         {
             get { return _thumbnailNbs; }
             set { _thumbnailNbs = value; }
         }
-        public int ThumbnailNb
+        public static int ThumbnailNb
         {
             get { return _thumbnailNb; }
             set { _thumbnailNb = value; }
@@ -204,9 +204,9 @@ namespace TT.Export.Thumbnails
                 export.LoadPresentationScene(); 
 
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
-                this._thumbnailNbs = _reference.BlockLinesNb;
+                _thumbnailNbs = _reference.BlockLinesNb;
 
-                for (int k = 1; k <= this.ThumbnailNbs; k++)//
+                for (int k = 1; k <= ThumbnailNbs; k++)//
                 {
                     if (this.status_BGW.CancellationPending)
                     {
@@ -268,7 +268,7 @@ namespace TT.Export.Thumbnails
                 }
 
                 //this.UpdateForm(this.ThumbnailNbs);  
-                this.status_BGW.ReportProgress(this.ThumbnailNbs);
+                this.status_BGW.ReportProgress(ThumbnailNbs);
             }
             catch (Exception ex)
             {
@@ -458,9 +458,9 @@ namespace TT.Export.Thumbnails
             }
             else
             {
-                this._thumbnailNbs = this.ThumbnailNbs;
-                this._thumbnailNb = e.ProgressPercentage;//  thumbnailNb;
-                this.Status_LAB2.Text = "Export Nb: " + this.ThumbnailNb.ToString() + KD.StringTools.Format.Spaced(KD.StringTools.Const.Slatch) + this.ThumbnailNbs.ToString();
+                _thumbnailNbs = ThumbnailNbs;
+                _thumbnailNb = e.ProgressPercentage;//  thumbnailNb;
+                this.Status_LAB2.Text = "Export Nb: " + ThumbnailNb.ToString() + KD.StringTools.Format.Spaced(KD.StringTools.Const.Slatch) + ThumbnailNbs.ToString();
                               
                 this.status_SST.Refresh();              
             }
