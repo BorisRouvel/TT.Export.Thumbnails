@@ -21,7 +21,8 @@ using KD.CatalogProperties;
 namespace TT.Export.Thumbnails
 {
     public class Plugin : KD.Plugin.PluginBase
-    {       
+    { 
+        
         Reference reference = null;
         string exportDir = String.Empty;
 
@@ -92,9 +93,9 @@ namespace TT.Export.Thumbnails
             this.ExecuteWebThumbnail(viewMode, xRes, yRes, antiAliasing, opened, loopAll, false, String.Empty);
             return true;
         }
-        public bool ExecuteWebThumbnailExport(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, string catalogFilePath = "")
+        public bool ExecuteWebThumbnailExport(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt, string catalogFilePath = "")
         {
-            this.ExecuteWebThumbnail(viewMode, xRes, yRes, antiAliasing, opened, loopAll, true, catalogFilePath);
+            this.ExecuteWebThumbnail(viewMode, xRes, yRes, antiAliasing, opened, loopAll, executeFromExt, catalogFilePath);
             return true;
         }
         public bool ExecuteWebThumbnail(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt, string catalogFilePath = "")
@@ -134,7 +135,7 @@ namespace TT.Export.Thumbnails
         {
             if (!executeFromExt)
             {
-                this.mainForm.ShowDialog(this.CurrentAppli.GetNativeIWin32Window());                
+                this.mainForm.ShowDialog();    // this.CurrentAppli.GetNativeIWin32Window()           
             }
             else
             {

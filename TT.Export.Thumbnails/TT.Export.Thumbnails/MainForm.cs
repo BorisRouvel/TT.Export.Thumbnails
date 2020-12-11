@@ -98,8 +98,11 @@ namespace TT.Export.Thumbnails
 
             _appli = appli;
             _reference = reference;
-            InitForm(_reference.CatalogFilePath);
+
             InitMembers(viewMode, xRes, yRes, antiAliasing, opened, loopAll, executeFromExt);
+            string catalogFileNameWithoutExtension = _reference.CatalogFilePath.Replace(KD.CatalogProperties.Const.CatalogExtension, String.Empty);
+            InitForm(catalogFileNameWithoutExtension);
+           
         }
 
 
@@ -110,6 +113,15 @@ namespace TT.Export.Thumbnails
             //string[] assemblyFullNameSplit = System.Reflection.Assembly.GetCallingAssembly().ToString().Split(KD.CharTools.Const.Comma);
             //this.version_LAB.Text = assemblyFullNameSplit[1]; // "Version : " + System.Reflection.Assembly.GetCallingAssembly(); //this.ProductVersion;
             this.transparency_CHB.CheckState = CheckState.Checked;
+
+            this.XRes_TBX.Text = this.Xres;
+            this.YRes_TBX.Text = this.Yres;
+            this.backGround_TBX.Text = this.BackGroundColor;
+            this.AntiAliasing_TBX.Text = this.AntiAliasing;
+            this.Open_RBT.Checked = this.Opened;
+            this.transparency_CHB.Checked = this.Transparency;
+
+            this.Ok_BTN.Enabled = true;
         }
         private void InitMembers(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt = true)
         {
@@ -140,17 +152,18 @@ namespace TT.Export.Thumbnails
 
         private long Main(BackgroundWorker worker, DoWorkEventArgs e)
         {
-            if (this.status_BGW.CancellationPending)
+            if (worker.CancellationPending)
             {               
-                return 100;
+                return 0;
             }
             else
             {
                 this.SetParameters();
                 //this.UpdateForm(0);
-               
-                this.status_BGW.ReportProgress(0);
-                this.Export(_reference.CatalogFilePath);
+
+                worker.ReportProgress(0);
+                string catalogFileNameWithoutExtension = _reference.CatalogFilePath.Replace(KD.CatalogProperties.Const.CatalogExtension, String.Empty);
+                this.Export(catalogFileNameWithoutExtension);
                 //if (this.Terminate())
                 //{
                 //    this.UploadToServer();
@@ -215,7 +228,7 @@ namespace TT.Export.Thumbnails
                     else
                     {
                         int clusterRank = k - KD.CatalogProperties.Const.ValueToBaseIndex;
-                        _reference = new Reference(_appli, clusterRank, 0);
+                        _reference = new Reference(_appli, -1, clusterRank, 0);
 
                         for (int m = 1; m <= _reference.Block_ArticleNb; m++)
                         {
@@ -223,7 +236,7 @@ namespace TT.Export.Thumbnails
                             this.status_BGW.ReportProgress(k);
 
                             int lineRank = m - KD.CatalogProperties.Const.ValueToBaseIndex;
-                            _reference = new Reference(_appli, clusterRank, lineRank);
+                            _reference = new Reference(_appli, -1, clusterRank, lineRank);
 
                             export = new Export(_reference);
 
@@ -333,14 +346,7 @@ namespace TT.Export.Thumbnails
         // Form
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this.XRes_TBX.Text = this.Xres;
-            this.YRes_TBX.Text = this.Yres;
-            this.backGround_TBX.Text = this.BackGroundColor;
-            this.AntiAliasing_TBX.Text = this.AntiAliasing;
-            this.Open_RBT.Checked = this.Opened;
-            this.transparency_CHB.Checked = this.Transparency;
-
-            this.Ok_BTN.Enabled = true;
+          
         }
 
         private void Ok_BTN_Click(object sender, EventArgs e)
@@ -445,16 +451,15 @@ namespace TT.Export.Thumbnails
         }
 
         private void status_BGW_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-        {
-            BackgroundWorker worker = new BackgroundWorker();
-            e.Result = this.Main(worker, e); // do your long operation here   
+        {           
+            e.Result = this.Main(this.status_BGW, e); // do your long operation here   
         }
 
         private void status_BGW_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             if (this.status_BGW.CancellationPending)
             {
-                this.status_BGW.CancelAsync();
+                return;
             }
             else
             {
@@ -470,7 +475,7 @@ namespace TT.Export.Thumbnails
         {
             System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Arrow;
 
-            DialogResult dialog = System.Windows.Forms.MessageBox.Show("Terminé.", "Information", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+            DialogResult dialog = System.Windows.Forms.MessageBox.Show("Vignettes Terminé.", "Information", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
 
         }
 

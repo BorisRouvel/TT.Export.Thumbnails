@@ -70,7 +70,7 @@
             this.Ok_BTN.Location = new System.Drawing.Point(81, 213);
             this.Ok_BTN.Name = "Ok_BTN";
             this.Ok_BTN.Size = new System.Drawing.Size(75, 23);
-            this.Ok_BTN.TabIndex = 6;
+            this.Ok_BTN.TabIndex = 17;
             this.Ok_BTN.Text = "Ok";
             this.Ok_BTN.UseVisualStyleBackColor = true;
             this.Ok_BTN.Click += new System.EventHandler(this.Ok_BTN_Click);
@@ -91,7 +91,7 @@
             this.Parameters_GBX.Location = new System.Drawing.Point(12, 12);
             this.Parameters_GBX.Name = "Parameters_GBX";
             this.Parameters_GBX.Size = new System.Drawing.Size(300, 195);
-            this.Parameters_GBX.TabIndex = 3;
+            this.Parameters_GBX.TabIndex = 1;
             this.Parameters_GBX.TabStop = false;
             this.Parameters_GBX.Text = "Paramètres";
             this.Parameters_GBX.Enter += new System.EventHandler(this.Parameters_GBX_Enter);
@@ -103,7 +103,7 @@
             this.State_GBX.Location = new System.Drawing.Point(99, 31);
             this.State_GBX.Name = "State_GBX";
             this.State_GBX.Size = new System.Drawing.Size(67, 74);
-            this.State_GBX.TabIndex = 17;
+            this.State_GBX.TabIndex = 7;
             this.State_GBX.TabStop = false;
             this.State_GBX.Text = "Etat";
             // 
@@ -114,7 +114,7 @@
             this.Open_RBT.Location = new System.Drawing.Point(6, 19);
             this.Open_RBT.Name = "Open_RBT";
             this.Open_RBT.Size = new System.Drawing.Size(51, 17);
-            this.Open_RBT.TabIndex = 4;
+            this.Open_RBT.TabIndex = 8;
             this.Open_RBT.TabStop = true;
             this.Open_RBT.Text = "Open";
             this.Open_RBT.UseVisualStyleBackColor = true;
@@ -125,7 +125,7 @@
             this.Close_RBT.Location = new System.Drawing.Point(6, 42);
             this.Close_RBT.Name = "Close_RBT";
             this.Close_RBT.Size = new System.Drawing.Size(51, 17);
-            this.Close_RBT.TabIndex = 5;
+            this.Close_RBT.TabIndex = 9;
             this.Close_RBT.Text = "Close";
             this.Close_RBT.UseVisualStyleBackColor = true;
             // 
@@ -135,7 +135,7 @@
             this.AntiAliasing_GBX.Location = new System.Drawing.Point(6, 111);
             this.AntiAliasing_GBX.Name = "AntiAliasing_GBX";
             this.AntiAliasing_GBX.Size = new System.Drawing.Size(87, 72);
-            this.AntiAliasing_GBX.TabIndex = 3;
+            this.AntiAliasing_GBX.TabIndex = 5;
             this.AntiAliasing_GBX.TabStop = false;
             this.AntiAliasing_GBX.Text = "Antialiasing";
             // 
@@ -144,7 +144,7 @@
             this.AntiAliasing_TBX.Location = new System.Drawing.Point(32, 28);
             this.AntiAliasing_TBX.Name = "AntiAliasing_TBX";
             this.AntiAliasing_TBX.Size = new System.Drawing.Size(24, 20);
-            this.AntiAliasing_TBX.TabIndex = 2;
+            this.AntiAliasing_TBX.TabIndex = 6;
             this.AntiAliasing_TBX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // Resolution_GBX
@@ -156,7 +156,7 @@
             this.Resolution_GBX.Location = new System.Drawing.Point(6, 31);
             this.Resolution_GBX.Name = "Resolution_GBX";
             this.Resolution_GBX.Size = new System.Drawing.Size(87, 74);
-            this.Resolution_GBX.TabIndex = 16;
+            this.Resolution_GBX.TabIndex = 2;
             this.Resolution_GBX.TabStop = false;
             this.Resolution_GBX.Text = "Résolution";
             // 
@@ -165,7 +165,7 @@
             this.XRes_TBX.Location = new System.Drawing.Point(32, 19);
             this.XRes_TBX.Name = "XRes_TBX";
             this.XRes_TBX.Size = new System.Drawing.Size(46, 20);
-            this.XRes_TBX.TabIndex = 0;
+            this.XRes_TBX.TabIndex = 3;
             this.XRes_TBX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // YRes_TBX
@@ -173,7 +173,7 @@
             this.YRes_TBX.Location = new System.Drawing.Point(32, 45);
             this.YRes_TBX.Name = "YRes_TBX";
             this.YRes_TBX.Size = new System.Drawing.Size(46, 20);
-            this.YRes_TBX.TabIndex = 1;
+            this.YRes_TBX.TabIndex = 4;
             this.YRes_TBX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // X_LAB
@@ -205,7 +205,7 @@
             this.Loop_GBX.Location = new System.Drawing.Point(172, 31);
             this.Loop_GBX.Name = "Loop_GBX";
             this.Loop_GBX.Size = new System.Drawing.Size(122, 152);
-            this.Loop_GBX.TabIndex = 15;
+            this.Loop_GBX.TabIndex = 13;
             this.Loop_GBX.TabStop = false;
             this.Loop_GBX.Text = "Lots";
             // 
@@ -220,7 +220,7 @@
             this.LoopRefs_TBX.Name = "LoopRefs_TBX";
             this.LoopRefs_TBX.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.LoopRefs_TBX.Size = new System.Drawing.Size(110, 73);
-            this.LoopRefs_TBX.TabIndex = 2;
+            this.LoopRefs_TBX.TabIndex = 16;
             // 
             // LoopRef_RBT
             // 
@@ -228,7 +228,7 @@
             this.LoopRef_RBT.Location = new System.Drawing.Point(6, 50);
             this.LoopRef_RBT.Name = "LoopRef_RBT";
             this.LoopRef_RBT.Size = new System.Drawing.Size(79, 17);
-            this.LoopRef_RBT.TabIndex = 1;
+            this.LoopRef_RBT.TabIndex = 15;
             this.LoopRef_RBT.TabStop = true;
             this.LoopRef_RBT.Text = "Par Réf ( ; )";
             this.LoopRef_RBT.UseVisualStyleBackColor = true;
@@ -240,7 +240,7 @@
             this.LoopAll_RBT.Location = new System.Drawing.Point(6, 24);
             this.LoopAll_RBT.Name = "LoopAll_RBT";
             this.LoopAll_RBT.Size = new System.Drawing.Size(47, 17);
-            this.LoopAll_RBT.TabIndex = 0;
+            this.LoopAll_RBT.TabIndex = 14;
             this.LoopAll_RBT.TabStop = true;
             this.LoopAll_RBT.Text = "Tout";
             this.LoopAll_RBT.UseVisualStyleBackColor = true;
@@ -253,7 +253,7 @@
             this.Viewmode_GBX.Location = new System.Drawing.Point(99, 111);
             this.Viewmode_GBX.Name = "Viewmode_GBX";
             this.Viewmode_GBX.Size = new System.Drawing.Size(67, 72);
-            this.Viewmode_GBX.TabIndex = 14;
+            this.Viewmode_GBX.TabIndex = 10;
             this.Viewmode_GBX.TabStop = false;
             this.Viewmode_GBX.Text = "Vue";
             // 
@@ -263,7 +263,7 @@
             this.Viewmode2D_RBT.Location = new System.Drawing.Point(16, 19);
             this.Viewmode2D_RBT.Name = "Viewmode2D_RBT";
             this.Viewmode2D_RBT.Size = new System.Drawing.Size(39, 17);
-            this.Viewmode2D_RBT.TabIndex = 12;
+            this.Viewmode2D_RBT.TabIndex = 11;
             this.Viewmode2D_RBT.Text = "2D";
             this.Viewmode2D_RBT.UseVisualStyleBackColor = true;
             // 
@@ -274,7 +274,7 @@
             this.Viewmode3D_RBT.Location = new System.Drawing.Point(16, 42);
             this.Viewmode3D_RBT.Name = "Viewmode3D_RBT";
             this.Viewmode3D_RBT.Size = new System.Drawing.Size(39, 17);
-            this.Viewmode3D_RBT.TabIndex = 13;
+            this.Viewmode3D_RBT.TabIndex = 12;
             this.Viewmode3D_RBT.TabStop = true;
             this.Viewmode3D_RBT.Text = "3D";
             this.Viewmode3D_RBT.UseVisualStyleBackColor = true;
@@ -319,7 +319,7 @@
             this.Cancel_BTN.Location = new System.Drawing.Point(162, 213);
             this.Cancel_BTN.Name = "Cancel_BTN";
             this.Cancel_BTN.Size = new System.Drawing.Size(75, 23);
-            this.Cancel_BTN.TabIndex = 11;
+            this.Cancel_BTN.TabIndex = 18;
             this.Cancel_BTN.Text = "Cancel";
             this.Cancel_BTN.UseVisualStyleBackColor = true;
             this.Cancel_BTN.Click += new System.EventHandler(this.Cancel_BTN_Click);
@@ -328,7 +328,7 @@
             // 
             this.status_SST.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Status_LAB2});
-            this.status_SST.Location = new System.Drawing.Point(0, 239);
+            this.status_SST.Location = new System.Drawing.Point(0, 262);
             this.status_SST.Name = "status_SST";
             this.status_SST.Size = new System.Drawing.Size(324, 22);
             this.status_SST.TabIndex = 12;
@@ -347,7 +347,7 @@
             this.Version_LNK.Location = new System.Drawing.Point(5, 218);
             this.Version_LNK.Name = "Version_LNK";
             this.Version_LNK.Size = new System.Drawing.Size(13, 13);
-            this.Version_LNK.TabIndex = 13;
+            this.Version_LNK.TabIndex = 19;
             this.Version_LNK.TabStop = true;
             this.Version_LNK.Text = "?";
             this.Version_LNK.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Version_LNK_LinkClicked);
@@ -366,7 +366,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel_BTN;
-            this.ClientSize = new System.Drawing.Size(324, 261);
+            this.ClientSize = new System.Drawing.Size(324, 284);
             this.ControlBox = false;
             this.Controls.Add(this.Version_LNK);
             this.Controls.Add(this.status_SST);

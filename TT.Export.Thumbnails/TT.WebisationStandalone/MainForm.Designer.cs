@@ -30,11 +30,11 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MainForm_GBX = new System.Windows.Forms.GroupBox();
-            this.ExportThumbnails_BTN = new System.Windows.Forms.Button();
+            this.GenerateCSVFile_BTN = new System.Windows.Forms.Button();
+            this.GenerateThumbnails_BTN = new System.Windows.Forms.Button();
             this.CatalogName_LAB = new System.Windows.Forms.Label();
             this.OpenCatalog_BTN = new System.Windows.Forms.Button();
-            this.Accept_BTN = new System.Windows.Forms.Button();
-            this.Cancel_BTN = new System.Windows.Forms.Button();
+            this.Close_BTN = new System.Windows.Forms.Button();
             this.OpenCatalog_OFD = new System.Windows.Forms.OpenFileDialog();
             this.StatusStrip_SST = new System.Windows.Forms.StatusStrip();
             this.Status_TSPB = new System.Windows.Forms.ToolStripProgressBar();
@@ -42,7 +42,7 @@
             this.Name_TSSL = new System.Windows.Forms.ToolStripStatusLabel();
             this.Status_BGW = new System.ComponentModel.BackgroundWorker();
             this.Version_LNK = new System.Windows.Forms.LinkLabel();
-            this.ExportThumbnail_LAB = new System.Windows.Forms.Label();
+            this.GenerateTranslate_CHB = new System.Windows.Forms.CheckBox();
             this.MainForm_GBX.SuspendLayout();
             this.StatusStrip_SST.SuspendLayout();
             this.SuspendLayout();
@@ -52,31 +52,44 @@
             this.MainForm_GBX.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.MainForm_GBX.Controls.Add(this.ExportThumbnail_LAB);
-            this.MainForm_GBX.Controls.Add(this.ExportThumbnails_BTN);
+            this.MainForm_GBX.Controls.Add(this.GenerateTranslate_CHB);
+            this.MainForm_GBX.Controls.Add(this.GenerateCSVFile_BTN);
+            this.MainForm_GBX.Controls.Add(this.GenerateThumbnails_BTN);
             this.MainForm_GBX.Controls.Add(this.CatalogName_LAB);
             this.MainForm_GBX.Controls.Add(this.OpenCatalog_BTN);
             this.MainForm_GBX.Location = new System.Drawing.Point(12, 12);
             this.MainForm_GBX.Name = "MainForm_GBX";
-            this.MainForm_GBX.Size = new System.Drawing.Size(280, 105);
+            this.MainForm_GBX.Size = new System.Drawing.Size(340, 115);
             this.MainForm_GBX.TabIndex = 0;
             this.MainForm_GBX.TabStop = false;
             this.MainForm_GBX.Text = "Catalogue :";
             // 
-            // ExportThumbnails_BTN
+            // GenerateCSVFile_BTN
             // 
-            this.ExportThumbnails_BTN.Location = new System.Drawing.Point(6, 65);
-            this.ExportThumbnails_BTN.Name = "ExportThumbnails_BTN";
-            this.ExportThumbnails_BTN.Size = new System.Drawing.Size(61, 32);
-            this.ExportThumbnails_BTN.TabIndex = 2;
-            this.ExportThumbnails_BTN.Text = "Vignettes";
-            this.ExportThumbnails_BTN.UseVisualStyleBackColor = true;
-            this.ExportThumbnails_BTN.Click += new System.EventHandler(this.ExportThumbnails_BTN_Click);
+            this.GenerateCSVFile_BTN.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.GenerateCSVFile_BTN.Location = new System.Drawing.Point(91, 75);
+            this.GenerateCSVFile_BTN.Name = "GenerateCSVFile_BTN";
+            this.GenerateCSVFile_BTN.Size = new System.Drawing.Size(75, 34);
+            this.GenerateCSVFile_BTN.TabIndex = 4;
+            this.GenerateCSVFile_BTN.Text = "Générer CSV";
+            this.GenerateCSVFile_BTN.UseVisualStyleBackColor = true;
+            this.GenerateCSVFile_BTN.Click += new System.EventHandler(this.GenerateCSVFile_BTN_Click);
+            // 
+            // GenerateThumbnails_BTN
+            // 
+            this.GenerateThumbnails_BTN.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.GenerateThumbnails_BTN.Location = new System.Drawing.Point(172, 75);
+            this.GenerateThumbnails_BTN.Name = "GenerateThumbnails_BTN";
+            this.GenerateThumbnails_BTN.Size = new System.Drawing.Size(75, 34);
+            this.GenerateThumbnails_BTN.TabIndex = 2;
+            this.GenerateThumbnails_BTN.Text = "Générer Vignettes";
+            this.GenerateThumbnails_BTN.UseVisualStyleBackColor = true;
+            this.GenerateThumbnails_BTN.Click += new System.EventHandler(this.GenerateThumbnails_BTN_Click);
             // 
             // CatalogName_LAB
             // 
             this.CatalogName_LAB.AutoSize = true;
-            this.CatalogName_LAB.Location = new System.Drawing.Point(58, 35);
+            this.CatalogName_LAB.Location = new System.Drawing.Point(44, 37);
             this.CatalogName_LAB.Name = "CatalogName_LAB";
             this.CatalogName_LAB.Size = new System.Drawing.Size(35, 13);
             this.CatalogName_LAB.TabIndex = 1;
@@ -84,36 +97,25 @@
             // 
             // OpenCatalog_BTN
             // 
-            this.OpenCatalog_BTN.Image = global::TT.WebisationStandalone.Properties.Resources._2002;
+            this.OpenCatalog_BTN.BackgroundImage = global::TT.WebisationStandalone.Properties.Resources._2002;
+            this.OpenCatalog_BTN.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.OpenCatalog_BTN.Location = new System.Drawing.Point(6, 27);
             this.OpenCatalog_BTN.Name = "OpenCatalog_BTN";
-            this.OpenCatalog_BTN.Size = new System.Drawing.Size(46, 32);
+            this.OpenCatalog_BTN.Size = new System.Drawing.Size(32, 32);
             this.OpenCatalog_BTN.TabIndex = 0;
             this.OpenCatalog_BTN.UseVisualStyleBackColor = true;
             this.OpenCatalog_BTN.Click += new System.EventHandler(this.OpenCatalog_BTN_Click);
             // 
-            // Accept_BTN
+            // Close_BTN
             // 
-            this.Accept_BTN.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.Accept_BTN.Location = new System.Drawing.Point(73, 123);
-            this.Accept_BTN.Name = "Accept_BTN";
-            this.Accept_BTN.Size = new System.Drawing.Size(75, 23);
-            this.Accept_BTN.TabIndex = 1;
-            this.Accept_BTN.Text = "Ok";
-            this.Accept_BTN.UseVisualStyleBackColor = true;
-            this.Accept_BTN.Click += new System.EventHandler(this.Accept_BTN_Click);
-            // 
-            // Cancel_BTN
-            // 
-            this.Cancel_BTN.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.Cancel_BTN.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel_BTN.Location = new System.Drawing.Point(154, 123);
-            this.Cancel_BTN.Name = "Cancel_BTN";
-            this.Cancel_BTN.Size = new System.Drawing.Size(75, 23);
-            this.Cancel_BTN.TabIndex = 2;
-            this.Cancel_BTN.Text = "Annuler";
-            this.Cancel_BTN.UseVisualStyleBackColor = true;
-            this.Cancel_BTN.Click += new System.EventHandler(this.Cancel_BTN_Click);
+            this.Close_BTN.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.Close_BTN.Location = new System.Drawing.Point(145, 133);
+            this.Close_BTN.Name = "Close_BTN";
+            this.Close_BTN.Size = new System.Drawing.Size(75, 23);
+            this.Close_BTN.TabIndex = 1;
+            this.Close_BTN.Text = "Fermer";
+            this.Close_BTN.UseVisualStyleBackColor = true;
+            this.Close_BTN.Click += new System.EventHandler(this.Close_BTN_Click);
             // 
             // StatusStrip_SST
             // 
@@ -121,9 +123,9 @@
             this.Status_TSPB,
             this.Status_TSSL,
             this.Name_TSSL});
-            this.StatusStrip_SST.Location = new System.Drawing.Point(0, 149);
+            this.StatusStrip_SST.Location = new System.Drawing.Point(0, 159);
             this.StatusStrip_SST.Name = "StatusStrip_SST";
-            this.StatusStrip_SST.Size = new System.Drawing.Size(304, 22);
+            this.StatusStrip_SST.Size = new System.Drawing.Size(364, 22);
             this.StatusStrip_SST.TabIndex = 3;
             this.StatusStrip_SST.Text = "statusStrip1";
             // 
@@ -131,7 +133,7 @@
             // 
             this.Status_TSPB.Margin = new System.Windows.Forms.Padding(1, 3, 10, 3);
             this.Status_TSPB.Name = "Status_TSPB";
-            this.Status_TSPB.Size = new System.Drawing.Size(150, 16);
+            this.Status_TSPB.Size = new System.Drawing.Size(170, 16);
             this.Status_TSPB.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             // 
             // Status_TSSL
@@ -143,8 +145,8 @@
             // Name_TSSL
             // 
             this.Name_TSSL.Name = "Name_TSSL";
-            this.Name_TSSL.Size = new System.Drawing.Size(34, 17);
-            this.Name_TSSL.Text = "Nom";
+            this.Name_TSSL.Size = new System.Drawing.Size(42, 17);
+            this.Name_TSSL.Text = "Fichier";
             // 
             // Status_BGW
             // 
@@ -158,7 +160,7 @@
             // 
             this.Version_LNK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.Version_LNK.AutoSize = true;
-            this.Version_LNK.Location = new System.Drawing.Point(9, 128);
+            this.Version_LNK.Location = new System.Drawing.Point(9, 138);
             this.Version_LNK.Name = "Version_LNK";
             this.Version_LNK.Size = new System.Drawing.Size(13, 13);
             this.Version_LNK.TabIndex = 4;
@@ -166,30 +168,28 @@
             this.Version_LNK.Text = "?";
             this.Version_LNK.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Version_LNK_LinkClicked);
             // 
-            // ExportThumbnail_LAB
+            // GenerateTranslate_CHB
             // 
-            this.ExportThumbnail_LAB.AutoSize = true;
-            this.ExportThumbnail_LAB.Location = new System.Drawing.Point(85, 75);
-            this.ExportThumbnail_LAB.Name = "ExportThumbnail_LAB";
-            this.ExportThumbnail_LAB.Size = new System.Drawing.Size(65, 13);
-            this.ExportThumbnail_LAB.TabIndex = 3;
-            this.ExportThumbnail_LAB.Text = "<==  Cliquez";
+            this.GenerateTranslate_CHB.AutoSize = true;
+            this.GenerateTranslate_CHB.Location = new System.Drawing.Point(5, 85);
+            this.GenerateTranslate_CHB.Name = "GenerateTranslate_CHB";
+            this.GenerateTranslate_CHB.Size = new System.Drawing.Size(77, 17);
+            this.GenerateTranslate_CHB.TabIndex = 5;
+            this.GenerateTranslate_CHB.Text = "Traduction";
+            this.GenerateTranslate_CHB.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
-            this.AcceptButton = this.Cancel_BTN;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.Cancel_BTN;
-            this.ClientSize = new System.Drawing.Size(304, 171);
+            this.ClientSize = new System.Drawing.Size(364, 181);
             this.Controls.Add(this.Version_LNK);
             this.Controls.Add(this.StatusStrip_SST);
-            this.Controls.Add(this.Cancel_BTN);
-            this.Controls.Add(this.Accept_BTN);
+            this.Controls.Add(this.Close_BTN);
             this.Controls.Add(this.MainForm_GBX);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(560, 420);
-            this.MinimumSize = new System.Drawing.Size(320, 180);
+            this.MinimumSize = new System.Drawing.Size(380, 220);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Webisation Autonome";
@@ -207,8 +207,7 @@
 
         private System.Windows.Forms.GroupBox MainForm_GBX;
         private System.Windows.Forms.Button OpenCatalog_BTN;
-        private System.Windows.Forms.Button Accept_BTN;
-        private System.Windows.Forms.Button Cancel_BTN;
+        private System.Windows.Forms.Button Close_BTN;
         private System.Windows.Forms.OpenFileDialog OpenCatalog_OFD;
         private System.Windows.Forms.StatusStrip StatusStrip_SST;
         private System.Windows.Forms.ToolStripProgressBar Status_TSPB;
@@ -217,8 +216,9 @@
         private System.ComponentModel.BackgroundWorker Status_BGW;
         private System.Windows.Forms.LinkLabel Version_LNK;
         private System.Windows.Forms.ToolStripStatusLabel Name_TSSL;
-        private System.Windows.Forms.Button ExportThumbnails_BTN;
-        private System.Windows.Forms.Label ExportThumbnail_LAB;
+        private System.Windows.Forms.Button GenerateThumbnails_BTN;
+        private System.Windows.Forms.Button GenerateCSVFile_BTN;
+        private System.Windows.Forms.CheckBox GenerateTranslate_CHB;
     }
 }
 

@@ -12,10 +12,10 @@ using KD.DicoHelper;
 namespace TT.WebisationStandalone
 {
     public partial class MainForm : Form 
-    {       
-        private Appli appli = new Appli(KD.InSitu.Ini.Const.FileNameSpaceIni);       
+    {
+        private Appli appli = null;  
         private Reference reference = null;
-        private TT.Export.Thumbnails.Plugin export = null;
+        private TT.Export.Thumbnails.Plugin thumbnailPlug = null;        
 
         private CsvManage sectionCSVManage = null;
         private CsvManage blocCSVManage = null;
@@ -48,25 +48,29 @@ namespace TT.WebisationStandalone
             this.InitForm();            
         }
 
-        //Event
+        //Event       
         private void InitForm()
         {
             this.MainForm_GBX.Text = "Catalogue";
-            this.CatalogName_LAB.Text = "Nom :";
-            this.Status_TSPB.Maximum = 0;
-            this.Accept_BTN.Enabled = false;
+            this.CatalogName_LAB.Text = "Nom :";            
+
             this.OpenCatalog_BTN.Enabled = true;
+            this.GenerateCSVFile_BTN.Enabled = false;
+            this.GenerateThumbnails_BTN.Enabled = false;
+            this.GenerateTranslate_CHB.Enabled = false;
         }
         private void UpdateForm()
         { 
             this.MainForm_GBX.Text = catalogFilePath;
             this.CatalogName_LAB.Text = reference.CatalogName;
-            //this.Status_TSPB.Maximum = 3; // reference.SectionLinesNb - 1;
-            this.Accept_BTN.Enabled = true;
-           
+
+            this.OpenCatalog_BTN.Enabled = false;
+            this.GenerateCSVFile_BTN.Enabled = true;
+            this.GenerateThumbnails_BTN.Enabled = true;
+            this.GenerateTranslate_CHB.Enabled = true;
         }
 
-        private void InitCSVFile(CsvFileWriter file)
+        private void DisposeCSVFile(CsvFileWriter file)
         {
             if (file != null)
             {
@@ -76,11 +80,12 @@ namespace TT.WebisationStandalone
         }
         private void InitMembers()
         {
+            appli = null;
             reference = null;
-            this.InitCSVFile(sectionCSVFile);
-            this.InitCSVFile(blocCSVFile);
-            this.InitCSVFile(articleCSVFile);
-            this.InitCSVFile(translateCSVFile);
+            this.DisposeCSVFile(sectionCSVFile);
+            this.DisposeCSVFile(blocCSVFile);
+            this.DisposeCSVFile(articleCSVFile);
+            this.DisposeCSVFile(translateCSVFile);
 
             sectionCSVManage = null;
             blocCSVManage = null;
@@ -99,15 +104,21 @@ namespace TT.WebisationStandalone
             reference = new Reference(appli, catalogFilePath);
             catalogFileName = Path.GetFileName(catalogFilePath);
             string catalogFileNameWithoutExtension = Path.GetFileNameWithoutExtension(catalogFilePath);
-            //catalogFileNameWithoutExtension + KD.StringTools.Const.Underscore +
-            sectionCSVFile = new CsvFileWriter(CsvManage.Const.sectionCSVFileName);
-            blocCSVFile = new CsvFileWriter( CsvManage.Const.blocCSVFileName);
-            articleCSVFile = new CsvFileWriter( CsvManage.Const.articleCSVFileName);
-            translateCSVFile = new CsvFileWriter( CsvManage.Const.translateCSVFileName);
+           
+            string exportDir = Path.Combine(catalogFileDir, catalogFileNameWithoutExtension);
 
-            catalogFileDir = Path.GetDirectoryName(catalogFilePath);
+            if (!Directory.Exists(exportDir))
+            {
+                Directory.CreateDirectory(exportDir);
+            }
+            //catalogFileNameWithoutExtension + KD.StringTools.Const.Underscore +
+            sectionCSVFile = new CsvFileWriter(Path.Combine(exportDir, CsvManage.Const.sectionCSVFileName));
+            blocCSVFile = new CsvFileWriter(Path.Combine(exportDir, CsvManage.Const.blocCSVFileName));
+            articleCSVFile = new CsvFileWriter(Path.Combine(exportDir, CsvManage.Const.articleCSVFileName));
+            translateCSVFile = new CsvFileWriter(Path.Combine(exportDir, CsvManage.Const.translateCSVFileName));
+           
         }
-        private void DisposeCSVFile()
+        private void DisposeAllCSVFile()
         {
             sectionCSVFile.Dispose();
             blocCSVFile.Dispose();
@@ -140,22 +151,31 @@ namespace TT.WebisationStandalone
         }
         private void UpdateSpaceINI()
         {
-            string iniPath = Path.Combine(Application.StartupPath, KD.InSitu.Ini.Const.FileNameSpaceIni);
-            KD.Config.IniFile iniFile = new KD.Config.IniFile(iniPath);
-            iniFile.WriteValue(KD.CatalogProperties.Const.SectionCatalogs, KD.CatalogProperties.Const.KeyDir, catalogFileDir);
-        }
+            catalogFileDir = Path.GetDirectoryName(catalogFilePath);
 
+            string spaceIniPath = Path.Combine(Application.StartupPath, KD.InSitu.Ini.Const.FileNameSpaceIni);
+            KD.Config.IniFile spaceIniFile = new KD.Config.IniFile(spaceIniPath);
+            spaceIniFile.WriteValue(KD.CatalogProperties.Const.SectionCatalogs, KD.CatalogProperties.Const.KeyDir, catalogFileDir);
+
+            string kdsdkIniPath = Path.Combine(Application.StartupPath, "KDSDK.ini");
+            KD.Config.IniFile kdsdkIniFile = new KD.Config.IniFile(kdsdkIniPath);
+            kdsdkIniFile.WriteValue("Debug", KD.CatalogProperties.Const.CatalogsDir, catalogFileDir);
+        }
+        private void UpdateAppli()
+        {          
+            appli = new Appli(KD.InSitu.Ini.Const.FileNameSpaceIni);         
+        }
 
         private object Main(BackgroundWorker worker, DoWorkEventArgs e)
         {
-            if (this.Status_BGW.CancellationPending)
+            if (worker.CancellationPending)
             {
                 return 0;
             }
             else
             {
-               
-                this.Status_BGW.ReportProgress(0);
+
+                worker.ReportProgress(0);
                 
                 this.WriteSectionInformations();
                 this.WriteBlocInformations();
@@ -220,6 +240,12 @@ namespace TT.WebisationStandalone
         private void WriteArticleInformations()
         {
             this.catalogStatus = "Articles";
+
+            if (GenerateTranslate_CHB.Checked)
+            {
+                this.catalogStatus += " et Traductions";
+            }
+
             this.progessBarMax = reference.ReferenceLinesNb - 1;
             this.Status_BGW.ReportProgress(0);
             int lineIndex = 0;
@@ -240,15 +266,18 @@ namespace TT.WebisationStandalone
                         reference = new Reference(appli, sectionRank, blockRank + blockLineIndex, articleRank);
                         sceneInfo = new SceneInfo(reference);
                         articleCSVManage = new CsvManage(articleCSVFile, reference, sceneInfo);
-                        //translateCSVManage = new CsvManage(translateCSVFile, reference, sceneInfo);
+                        translateCSVManage = new CsvManage(translateCSVFile, reference, sceneInfo);
 
                         if (articleCSVManage.IsSectionValid(reference.Section_Code, reference.Section_Name))
                         {                            
                             articleCSVManage.SetArticlePlacedRow();
                             articleCSVFile.Flush();
 
-                            //translateCSVManage.SetTranslateRow();
-                            //translateCSVFile.Flush();
+                            if (GenerateTranslate_CHB.Checked)
+                            {
+                                translateCSVManage.SetTranslatePlacedRow();
+                                translateCSVFile.Flush();
+                            }
                         }
                         this.Status_BGW.ReportProgress(lineIndex);
                         lineIndex++;
@@ -257,7 +286,7 @@ namespace TT.WebisationStandalone
             }
            
             articleCSVFile.Dispose();
-           // translateCSVFile.Dispose();
+            translateCSVFile.Dispose();
         }
 
         //private void WriteCSVInformations()
@@ -298,23 +327,12 @@ namespace TT.WebisationStandalone
       
         private void ExecuteThumbnails()
         {
-            if (export == null)
+            if (thumbnailPlug == null)
             {
-                export = new TT.Export.Thumbnails.Plugin();
+                thumbnailPlug = new TT.Export.Thumbnails.Plugin();
             }
-
-            //this.ExportThumbnail_LAB.Text = TT.Export.Thumbnails.MainForm.ThumbnailNb.ToString() + " / " + TT.Export.Thumbnails.MainForm.ThumbnailNbs.ToString();
-            this.ExportThumbnail_LAB.Text = "En cours : 84 x 84";
-            this.Refresh();
-
-            export.ExecuteWebThumbnailExport("3D", "84", "84", "3", true, true, catalogFilePath);
-            this.ExportThumbnail_LAB.Text = "En cours : 220 x 220";
-            this.Refresh();
-
-            //this.ExportThumbnail_LAB.Text = TT.Export.Thumbnails.MainForm.ThumbnailNb.ToString() + " / " + TT.Export.Thumbnails.MainForm.ThumbnailNbs.ToString();
-            export.ExecuteWebThumbnailExport("3D", "220", "220", "3", true, true, catalogFilePath);
-            this.ExportThumbnail_LAB.Text = "Terminé";
-            this.Refresh();
+                     
+            thumbnailPlug.ExecuteWebThumbnailExport(String.Empty, String.Empty, String.Empty, String.Empty, true, true, false, catalogFilePath);          
         }
      
 
@@ -322,21 +340,7 @@ namespace TT.WebisationStandalone
         private void MainForm_Load(object sender, EventArgs e)
         {
 
-        }
-
-        private void Accept_BTN_Click(object sender, EventArgs e)
-        {
-            this.Accept_BTN.Enabled = false;
-            this.OpenCatalog_BTN.Enabled = false;
-
-            this.Status_BGW.RunWorkerAsync();
-        }
-
-        private void Cancel_BTN_Click(object sender, EventArgs e)
-        {
-            this.Status_BGW.CancelAsync();
-            this.Close();
-        }
+        }         
 
         private void OpenCatalog_BTN_Click(object sender, EventArgs e)
         {
@@ -345,14 +349,21 @@ namespace TT.WebisationStandalone
 
             if (this.OpenCatalog())
             {
-                this.SetMembers();
-                this.UpdateForm();
                 this.UpdateSpaceINI();
+                this.UpdateAppli();
+                this.SetMembers();
+                this.UpdateForm();               
             }
         }
 
+        private void Close_BTN_Click(object sender, EventArgs e)
+        {
+            this.Status_BGW.CancelAsync();
+            this.Close();
+        }
+
         private void Status_BGW_DoWork(object sender, DoWorkEventArgs e)
-        {          
+        {
             e.Result = this.Main(this.Status_BGW, e); // do your long operation here   
         }
 
@@ -375,10 +386,12 @@ namespace TT.WebisationStandalone
 
         private void Status_BGW_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {           
-            this.Accept_BTN.Enabled = false;
             this.OpenCatalog_BTN.Enabled = true;
+            this.GenerateCSVFile_BTN.Enabled = true;
+            this.GenerateThumbnails_BTN.Enabled = true;
+            this.GenerateTranslate_CHB.Enabled = true;
 
-            DialogResult dialog = System.Windows.Forms.MessageBox.Show("Terminé.", "Information", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+            DialogResult dialog = System.Windows.Forms.MessageBox.Show("Fichier CSV Terminé.", "Information", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
         }
 
         private void Version_LNK_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -388,9 +401,19 @@ namespace TT.WebisationStandalone
             MessageBox.Show("Version: " + assemblyVersion[1], "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void ExportThumbnails_BTN_Click(object sender, EventArgs e)
+        private void GenerateThumbnails_BTN_Click(object sender, EventArgs e)
         {
             this.ExecuteThumbnails();
+        }
+
+        private void GenerateCSVFile_BTN_Click(object sender, EventArgs e)
+        {
+            this.OpenCatalog_BTN.Enabled = false;
+            this.GenerateCSVFile_BTN.Enabled = false;
+            this.GenerateThumbnails_BTN.Enabled = false;
+            this.GenerateTranslate_CHB.Enabled = false;
+
+            this.Status_BGW.RunWorkerAsync();
         }
     }
 }
