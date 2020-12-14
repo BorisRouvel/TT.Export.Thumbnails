@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 using KD.CatalogProperties;
 using KD.DicoHelper;
+using KD.CsvHelper;
 
 namespace TT.WebisationStandalone
 {
     public class SceneInfo
     {
-        private Reference _reference = null;
+        private Reference _reference = null;       
 
         private string isDimXvar = String.Empty;
         private string isDimYvar = String.Empty;
@@ -16,7 +18,7 @@ namespace TT.WebisationStandalone
         private string topic = String.Empty;
         private string layer = String.Empty;
         private string type = String.Empty;
-        private string blocCode = String.Empty;
+        private string blockCode = String.Empty;
         private string name = String.Empty;
 
         private string nameLng = String.Empty;
@@ -25,8 +27,8 @@ namespace TT.WebisationStandalone
 
         private string translateCatalogName = String.Empty;
         private string translateSectionName = String.Empty;
-        private string translateBlocName = String.Empty;
-        private string translateBlocDescription = String.Empty;
+        private string translateBlockName = String.Empty;
+        private string translateBlockDescription = String.Empty;
         private string translateModelName = String.Empty;
         private string translateModelFinishName = String.Empty;
         private string translateFamilyName = String.Empty;
@@ -45,15 +47,15 @@ namespace TT.WebisationStandalone
             topic = String.Empty;
             layer = String.Empty;
             type = String.Empty;
-            blocCode = String.Empty;
+            blockCode = String.Empty;
             name = String.Empty;
         }
         private void InitSceneLanguageObjectInfo()
         {
             translateCatalogName = String.Empty;
             translateSectionName = String.Empty;
-            translateBlocName = String.Empty;
-            translateBlocDescription = String.Empty;
+            translateBlockName = String.Empty;
+            translateBlockDescription = String.Empty;
             translateModelName = String.Empty;
             translateModelFinishName = String.Empty;
             translateFamilyName = String.Empty;
@@ -69,7 +71,7 @@ namespace TT.WebisationStandalone
             topic = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.TOPIC);
             layer = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.LAYER);
             type = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.TYPE);
-            blocCode = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.BLOCKCODE);
+            blockCode = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.BLOCKCODE);
             name = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.NAME);
         }
 
@@ -102,79 +104,30 @@ namespace TT.WebisationStandalone
         {
             translateCatalogName = this.SetTranslate(0, language, SetTranslateCatalogName(objId, _reference.CatalogLanguage), SetTranslateCatalogName(objId, language));
             translateSectionName = this.SetTranslate(1, language, SetTranslateSectionName(objId, _reference.CatalogLanguage), SetTranslateSectionName(objId, language));
-            translateBlocName = this.SetTranslate(2, language, SetTranslateBlocName(objId, _reference.CatalogLanguage), SetTranslateBlocName(objId, language));
-            translateBlocDescription = this.SetTranslate(3, language, SetTranslateBlocDescription(objId, _reference.CatalogLanguage), SetTranslateBlocDescription(objId, language));
+            translateBlockName = this.SetTranslate(2, language, SetTranslateBlockName(objId, _reference.CatalogLanguage), SetTranslateBlockName(objId, language));
+            translateBlockDescription = this.SetTranslate(3, language, SetTranslateBlockDescription(objId, _reference.CatalogLanguage), SetTranslateBlockDescription(objId, language));
         }
 
         private string SetTranslateCatalogName(int objId, string language)
         {
             bool bLng = _reference.CurrentAppli.SetLanguage(language);
-            return _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.CATALOGNAME);
-
-            //bool bLngSrc = _reference.CurrentAppli.SetLanguage(_reference.CatalogLanguage);
-            //string src = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.CATALOGNAME);
-
-            //bool bLng = _reference.CurrentAppli.SetLanguage(language);
-            //string trad = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.CATALOGNAME);
-
-            //translateCatalogName = this.SetTranslate(1, language, src, trad);
+            return _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.CATALOGNAME);        
         }
         private string SetTranslateSectionName(int objId, string language)
         {
             bool bLng = _reference.CurrentAppli.SetLanguage(language);
             return _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.SECTIONNAME);
-
-            //bool bLngSrc = _reference.CurrentAppli.SetLanguage(_reference.CatalogLanguage);
-            //string src = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.SECTIONNAME);
-
-            //bool bLng = _reference.CurrentAppli.SetLanguage(language);
-            //string trad = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.SECTIONNAME);
-
-            //translateSectionName = this.SetTranslate(2, language, src, trad);
         }
-        private string SetTranslateBlocName(int objId, string language)
+        private string SetTranslateBlockName(int objId, string language)
         {
             bool bLng = _reference.CurrentAppli.SetLanguage(language);
-            return _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.NAME);
-
-            //bool bLngSrc = _reference.CurrentAppli.SetLanguage(_reference.CatalogLanguage);
-            //string src = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.NAME);
-
-            //bool bLng = _reference.CurrentAppli.SetLanguage(language);
-            //string trad = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.NAME);
-
-            //translateBlocName = this.SetTranslate(3, language, src, trad);
+            return _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.NAME);           
         }
-        private string SetTranslateBlocDescription(int objId, string language)
+        private string SetTranslateBlockDescription(int objId, string language)
         {
             bool bLng = _reference.CurrentAppli.SetLanguage(language);
-            return _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.DESCRIPTION);
-
-            //bool bLngSrc = _reference.CurrentAppli.SetLanguage(_reference.CatalogLanguage);
-            //string src = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.DESCRIPTION);
-
-            //bool bLng = _reference.CurrentAppli.SetLanguage(language);
-            //string trad = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.DESCRIPTION);
-
-            //translateBlocDescription = this.SetTranslate(3, language, src, trad);
+            return _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.DESCRIPTION);        
         }
-
-
-        //private string SetLanguagesObjectInfo(int objId, string language)
-        //{
-        //    bool bLng = _reference.CurrentAppli.SetLanguage(language);
-
-        //    translateCatalogName = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.CATALOGNAME);
-        //    translateSectionName = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.SECTIONNAME);
-        //    translateBlocName = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.NAME);
-        //    translateBlocDescription = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.DESCRIPTION);
-        //    translateModelName = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.MODELNAME);
-        //    translateModelFinishName = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.MODELFINISHNAME);
-        //    translateFamilyName = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.FAMILYNAME);
-        //    translateFamilyFinishName = _reference.CurrentAppli.Scene.ObjectGetInfo(objId, KD.SDK.SceneEnum.ObjectInfo.FAMILYFINISHNAME);
-
-        //    return translateBlocName;
-        //}
 
         private void CreateScene()
         {
@@ -189,13 +142,18 @@ namespace TT.WebisationStandalone
         private int PlaceObject()
         {
             int objId = KD.Const.UnknownId;
-            int select = 0;
-
-            int wallId = _reference.CurrentAppli.Scene.EditPlaceWalls(150, 4000, "-5000,0,0,0;5000,0,0,0"); // "x1,y1,z1,t1;x2,y2,z2,t2"
+            int select = 0;            
 
             if (MainForm.IsFirstPlaceObject)
             {
                 MainForm.IsFirstPlaceObject = false;
+
+                int thickNess = _reference.Article_Depth;
+                if (thickNess <= 1)
+                {
+                    thickNess = 150;
+                }
+                int wallId = _reference.CurrentAppli.Scene.EditPlaceWalls(thickNess, 4000, "-5000,0,0,0;5000,0,0,0"); // "x1,y1,z1,t1;x2,y2,z2,t2"
 
                 objId = _reference.CurrentAppli.Scene.EditPlaceObject(_reference.CatalogFileName,
                                                                   _reference.Article_Key,
@@ -218,7 +176,7 @@ namespace TT.WebisationStandalone
                     {
                         MainForm.SelectId = objId;
                     }
-                }
+                }               
             }
             else
             {
@@ -246,16 +204,22 @@ namespace TT.WebisationStandalone
                             MainForm.SelectId = objId;
                         }
                     }
+                    else
+                    {
+                        MainForm.IsFirstPlaceObject = true;
+                        objId = this.PlaceObject();
+                    }
                 }
             }
 
-
-            //bool bSave = _reference.CurrentAppli.Scene.FileSave(@"d:\ic90dev\bmp\webscene.scn");
+            if (objId == -1)
+            {
+                bool bSave = _reference.CurrentAppli.Scene.FileSave(@"d:\ic90dev\bmp\webscene.scn");
+            }
             return objId;
         }
 
-
-        public void GenerateSceneInformations(string language = "")
+        public bool GenerateSceneInformations(string language = "")
         {
             this.InitSceneObjectInfo();
 
@@ -280,13 +244,11 @@ namespace TT.WebisationStandalone
                     {
                         this.InitSceneLanguageObjectInfo();
                         this.SetSceneLanguageObjectInfo(objId, language);
-                        //this.SetTranslateCatalogName(objId, language);
-                        //this.SetTranslateSectionName(objId, language);
-                        //this.SetTranslateBlocName(objId, language);
-                        //this.SetTranslateBlocDescription(objId, language);
                     }
+                    return true;
                 }
             }
+            return false;
         }
         public List<string> ArticleRow()
         {
@@ -298,7 +260,7 @@ namespace TT.WebisationStandalone
             list.Add(topic);
             list.Add(layer);
             list.Add(type);
-            list.Add(blocCode);
+            list.Add(blockCode);
             list.Add(name);
 
             return list;
@@ -323,22 +285,23 @@ namespace TT.WebisationStandalone
 
             return list;
         }
-        public List<string> TranslateBlocNameRow()
+        public List<string> TranslateBlockNameRow()
         {
             List<string> list = new List<string>(0);
 
-            list.Add(translateBlocName);
+            list.Add(translateBlockName);
 
             return list;
         }
-        public List<string> TranslateBlocDescriptionRow()
+        public List<string> TranslateBlockDescriptionRow()
         {
             List<string> list = new List<string>(0);
 
-            translateBlocDescription = translateBlocDescription.Replace("\r\n", "///");
-            list.Add(translateBlocDescription);
+            translateBlockDescription = translateBlockDescription.Replace("\r\n", "///");
+            list.Add(translateBlockDescription);
 
             return list;
         }
+
     }
 }

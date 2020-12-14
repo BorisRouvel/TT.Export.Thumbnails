@@ -90,15 +90,15 @@ namespace TT.Export.Thumbnails
        
         public bool ExecuteWebThumbnailExportInside(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll)
         {
-            this.ExecuteWebThumbnail(viewMode, xRes, yRes, antiAliasing, opened, loopAll, false, String.Empty);
+            this.ExecuteWebThumbnail(viewMode, xRes, yRes, antiAliasing, opened, loopAll, false, String.Empty, String.Empty);
             return true;
         }
-        public bool ExecuteWebThumbnailExport(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt, string catalogFilePath = "")
+        public bool ExecuteWebThumbnailExport(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt, string catalogFilePath = "", string path = "")
         {
-            this.ExecuteWebThumbnail(viewMode, xRes, yRes, antiAliasing, opened, loopAll, executeFromExt, catalogFilePath);
+            this.ExecuteWebThumbnail(viewMode, xRes, yRes, antiAliasing, opened, loopAll, executeFromExt, catalogFilePath, path);
             return true;
         }
-        public bool ExecuteWebThumbnail(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt, string catalogFilePath = "")
+        public bool ExecuteWebThumbnail(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt, string catalogFilePath = "", string path = "")
         {
             if (String.IsNullOrEmpty(catalogFilePath))
             {
@@ -118,20 +118,20 @@ namespace TT.Export.Thumbnails
             }
             else
             {
-                this.InitializeMainForm(viewMode, xRes, yRes, antiAliasing, opened, loopAll, executeFromExt);
+                this.InitializeMainForm(viewMode, xRes, yRes, antiAliasing, opened, loopAll, executeFromExt, path);
                 this.ShowMainForm(executeFromExt);
             }
             return true;
         }
 
-        private void InitializeMainForm(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt = true)
+        private void InitializeMainForm(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt = true, string path = "")
         {
             if (this.mainForm == null)
             {
-                this.mainForm = new MainForm(this.CurrentAppli, reference, viewMode, xRes, yRes, antiAliasing, opened, loopAll, executeFromExt);
+                this.mainForm = new MainForm(this.CurrentAppli, reference, viewMode, xRes, yRes, antiAliasing, opened, loopAll, executeFromExt, path);
             }           
         }
-        private void ShowMainForm( bool executeFromExt = true)
+        private void ShowMainForm(bool executeFromExt = true )
         {
             if (!executeFromExt)
             {

@@ -109,7 +109,7 @@ namespace TT.Export.Thumbnails
             {
                 bigOrmoy = big_Vignette;
             }
-            _exportByResDir = System.IO.Path.Combine(CatalogFileName, bigOrmoy);
+            _exportByResDir = System.IO.Path.Combine(System.IO.Path.GetFileNameWithoutExtension(CatalogFileName), bigOrmoy);           
             _exportByResDir = _exportByResDir.Replace( KD.CatalogProperties.Const.CatalogExtension, String.Empty);           
         }
         #endregion
@@ -232,22 +232,28 @@ namespace TT.Export.Thumbnails
             return true;
         }
 
-        public void CreateExportDirectory()
+        public void CreateExportDirectory(string path1)
         {
-            if (!this.IsDirectoryExist())
+            if (!this.IsDirectoryExist(path1))
             {
-                exportDir = this.CreateDirectory();
+                exportDir = this.CreateDirectory(path1);
             }
             else
             {
-                string path1 = _appli.CatalogDir;
+                if (String.IsNullOrEmpty(path1))
+                {
+                    path1 = _appli.CatalogDir;
+                }
                 string path2 = _exportByResDir;
                 exportDir = System.IO.Path.Combine(path1, path2);
             }
         }
-        private bool IsDirectoryExist()
+        private bool IsDirectoryExist(string path1)
         {
-            string path1 = _appli.CatalogDir;
+            if (String.IsNullOrEmpty(path1))
+            {
+                path1 = _appli.CatalogDir;
+            }
             string path2 = _exportByResDir;
             if (System.IO.Directory.Exists(System.IO.Path.Combine(path1, path2)))
             {
@@ -255,21 +261,31 @@ namespace TT.Export.Thumbnails
             }
             return false;
         }
-        private string CreateDirectory()
+        private string CreateDirectory(string path1)
         {
-            string path1 = _appli.CatalogDir;
+            if (String.IsNullOrEmpty(path1))
+            {
+                path1 = _appli.CatalogDir;
+            }
             string path2 = _exportByResDir;
             string dir = System.IO.Path.Combine(path1, path2);
-            System.IO.Directory.CreateDirectory(dir);
+            try
+            {
+                System.IO.Directory.CreateDirectory(dir);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Impossible de créer le répertoire " + dir + Environment.NewLine + ex.Message);
+            }            
 
             return dir;
         }
 
         private string ReplaceProhibitedCharacter(string nameToCheck) // "\\", "/", ":", "\"", "*", "?", "<", ">", "|", "=", ".", ","   KD.StringTools.Const.Dot,
         {
-            string[] ProhibitedCharacterList = new string[] { KD.StringTools.Const.BackSlatch, KD.StringTools.Const.Slatch, KD.StringTools.Const.Colon, KD.StringTools.Const.DoubleQuote,
-                KD.StringTools.Const.Wildcard, "?", KD.StringTools.Const.StrictlyInferiorSign, KD.StringTools.Const.StrictlySuperiorSign, KD.StringTools.Const.Pipe, KD.StringTools.Const.EqualSign,
-                KD.StringTools.Const.Comma };
+            //string[] ProhibitedCharacterList = new string[] { KD.StringTools.Const.BackSlatch, KD.StringTools.Const.Slatch, KD.StringTools.Const.Colon, KD.StringTools.Const.DoubleQuote,
+            //    KD.StringTools.Const.Wildcard, "?", KD.StringTools.Const.StrictlyInferiorSign, KD.StringTools.Const.StrictlySuperiorSign, KD.StringTools.Const.Pipe, KD.StringTools.Const.EqualSign,
+            //    KD.StringTools.Const.Comma };
 
             try
             {

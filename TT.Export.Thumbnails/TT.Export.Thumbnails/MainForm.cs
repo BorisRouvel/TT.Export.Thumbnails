@@ -23,6 +23,7 @@ namespace TT.Export.Thumbnails
         private bool _transparency;
         private bool _loopAll;
         private string _loopRefs;
+        private string _path;
 
         private static int _thumbnailNbs = 0;
         private static int _thumbnailNb = 0;
@@ -62,17 +63,20 @@ namespace TT.Export.Thumbnails
             get { return _transparency; }
             set { _transparency = value; }
         }
-
         public bool LoopAll
         {
             get { return _loopAll; }
             set { _loopAll = value; }
         }
-
         public string LoopRefs
         {
             get { return _loopRefs; }
             set { _loopRefs = value; }
+        }
+        public string Path
+        {
+            get { return _path; }
+            set { _path = value; }
         }
 
         public static int ThumbnailNbs
@@ -92,14 +96,14 @@ namespace TT.Export.Thumbnails
             InitializeComponent();
         }
         public MainForm(KD.SDKComponent.AppliComponent appli, Reference reference, 
-                        string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt = true)
+                        string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt = true, string path = "")
         {
             InitializeComponent();
 
             _appli = appli;
             _reference = reference;
 
-            InitMembers(viewMode, xRes, yRes, antiAliasing, opened, loopAll, executeFromExt);
+            InitMembers(viewMode, xRes, yRes, antiAliasing, opened, loopAll, executeFromExt, path);
             string catalogFileNameWithoutExtension = _reference.CatalogFilePath.Replace(KD.CatalogProperties.Const.CatalogExtension, String.Empty);
             InitForm(catalogFileNameWithoutExtension);
            
@@ -123,7 +127,7 @@ namespace TT.Export.Thumbnails
 
             this.Ok_BTN.Enabled = true;
         }
-        private void InitMembers(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt = true)
+        private void InitMembers(string viewMode, string xRes, string yRes, string antiAliasing, bool opened, bool loopAll, bool executeFromExt = true, string path = "")
         {
             _viewMode = "3D";
             _xRes = "84";
@@ -133,6 +137,7 @@ namespace TT.Export.Thumbnails
             _opened = true;
             _transparency = true;
             _loopAll = true;
+            _path = path;
             _loopRefs = String.Empty;
             _webCatalogURL = _appli.Catalog.GetInfo(KD.SDK.CatalogEnum.InfoId.WEBCATALOG_URL);
 
@@ -212,7 +217,7 @@ namespace TT.Export.Thumbnails
             {
                 Export export = new Export(_appli, _reference, catalogFileName, this); 
              
-                export.CreateExportDirectory();
+                export.CreateExportDirectory(this.Path);
                 export.ExtractPresentationScene();
                 export.LoadPresentationScene(); 
 
@@ -350,8 +355,7 @@ namespace TT.Export.Thumbnails
         }
 
         private void Ok_BTN_Click(object sender, EventArgs e)
-        {
-            //this.Main();
+        {           
             this.Ok_BTN.Enabled = false;
             this.status_BGW.RunWorkerAsync();
         }
